@@ -7,7 +7,6 @@ public class Period {//period in java = class in db
     public String classCode;
     public boolean archived;
 
-    public Period () {}
-
-    
+    public Period () {
+    }
 }
