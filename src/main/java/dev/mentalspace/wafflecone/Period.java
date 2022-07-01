@@ -1,9 +1,10 @@
-public class Period {//period in java = class in db
+// Period Object in Database
+public class Period {
     public long classId;
     public long teacherId;
     public long subjectId;
     public long termId;
-    public int peirod;
+    public int period;
     public String classCode;
     public boolean archived;
 
