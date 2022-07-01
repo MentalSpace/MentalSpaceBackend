@@ -6,7 +6,6 @@ public class Student {
     public int phone;
     public int grade;
 
-    public Student () {}
-
-    
+    public Student() {
+    }    
 }
