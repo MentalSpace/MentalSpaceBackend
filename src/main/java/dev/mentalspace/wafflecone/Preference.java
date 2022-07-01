@@ -6,6 +6,6 @@ public class Preference {
     public int breakLength;
     public int breakFrequency;
 
-    public Preference () {
+    public Preference() {
     }
 }
