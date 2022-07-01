@@ -4,6 +4,6 @@ public class School {
     public String name;
     public String address;
 
-    public School () {
+    public School() {
     }
 }
