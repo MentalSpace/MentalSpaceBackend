@@ -9,7 +9,6 @@ public class User {
     public int teacherId;
     public int studentId;
 
-    public User () {}
-
-
+    public User () {
+    }
 }
