@@ -7,6 +7,6 @@ public class Todo {
     public long projectedEnd;
     public int priority;
 
-    public Todo () {
+    public Todo() {
     }
 }
