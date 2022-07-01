@@ -6,6 +6,6 @@ public class RefreshToken {
     public boolean valid;
     public long nextTokenId;
 
-    public RefreshToken () {
+    public RefreshToken() {
     }
 }
