@@ -4,7 +4,6 @@ public class Enrollment {
     public long classId;
     public int preference;
 
-    public Enrollment () {}
-
-    
+    public Enrollment() {
+    }   
 }
