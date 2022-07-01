@@ -1,6 +1,6 @@
 public class Teacher {
     public long teacherId;
-    public long cannonicalId;
+    public long canonicalId;
     public String firstName;
     public String lastName;
     public int phone;
