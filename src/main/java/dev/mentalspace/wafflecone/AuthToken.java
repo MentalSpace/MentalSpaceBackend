@@ -6,7 +6,6 @@ public class AuthToken {
     public boolean valid;
     public int permissions;
 
-    public AuthToken () {}
-
-
+    public AuthToken() {
+    }
 }
