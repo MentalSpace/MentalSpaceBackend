@@ -5,7 +5,6 @@ public class Work {
     public int timeRemaining;
     public int priority;
 
-    public Work () {}
-
-
+    public Work() {
+    }
 }
