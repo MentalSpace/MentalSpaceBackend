@@ -4,7 +4,6 @@ public class Subject {
     public String description;
     public String name;
 
-    public Subject () {}
-
-    
+    public Subject () {
+    }
 }
