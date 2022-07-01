@@ -5,7 +5,6 @@ public class EmailRegex {
     public String regex;
     public int permissions;
 
-    public EmailRegex () {}
-
-
+    public EmailRegex() {
+    }
 }
