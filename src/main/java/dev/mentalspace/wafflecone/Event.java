@@ -9,6 +9,6 @@ public class Event {
     public int weeklyDays;
     public int monthlyDays;
 
-    public Event () {
+    public Event() {
     }
 }
