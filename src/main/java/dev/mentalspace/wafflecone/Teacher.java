@@ -6,7 +6,6 @@ public class Teacher {
     public int phone;
     public int grade;
 
-    public Teacher () {}
-
-    
+    public Teacher () {
+    }
 }
