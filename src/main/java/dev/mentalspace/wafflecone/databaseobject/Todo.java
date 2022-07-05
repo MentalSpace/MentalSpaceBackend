@@ -1,13 +1,13 @@
 package dev.mentalspace.wafflecone.databaseobject;
 
 public class Todo {
-    public long todoId;
-    public long workId;
-    public long date;
-    public int plannedTime;
-    public long projectedStart;
-    public long projectedEnd;
-    public int priority;
+    public Long todoId;
+    public Long workId;
+    public Long date;
+    public Integer plannedTime;
+    public Long projectedStart;
+    public Long projectedEnd;
+    public Integer priority;
 
     public Todo() {
     }

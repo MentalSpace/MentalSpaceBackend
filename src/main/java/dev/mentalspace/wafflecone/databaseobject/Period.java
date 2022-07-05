@@ -1,11 +1,11 @@
 package dev.mentalspace.wafflecone.databaseobject;
 
 public class Period {
-    public long classId;
-    public long teacherId;
-    public long subjectId;
-    public long termId;
-    public int period;
+    public Long classId;
+    public Long teacherId;
+    public Long subjectId;
+    public Long termId;
+    public Integer period;
     public String classCode;
     public boolean archived;
 
