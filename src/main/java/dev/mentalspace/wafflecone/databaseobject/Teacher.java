@@ -6,7 +6,7 @@ public class Teacher {
     public String firstName;
     public String lastName;
     public Integer phone;
-    public Integer grade;
+    public String department;
 
     public Teacher() {
     }

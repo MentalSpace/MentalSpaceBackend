@@ -7,6 +7,8 @@ public class Event {
     public String description;
     public Long startTime;
     public Long endTime;
+    public Long startDate;
+    public Long endDate;
     public Integer recurring;
     public Integer weeklyDays;
     public Integer monthlyDays;

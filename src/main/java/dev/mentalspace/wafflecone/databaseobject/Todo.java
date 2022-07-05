@@ -6,7 +6,6 @@ public class Todo {
     public Long date;
     public Integer plannedTime;
     public Long projectedStart;
-    public Long projectedEnd;
     public Integer priority;
 
     public Todo() {

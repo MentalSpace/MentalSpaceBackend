@@ -13,7 +13,7 @@ public class TeacherRowMapper implements RowMapper<Teacher> {
         teacher.firstName    = row.getString("first_name");
         teacher.lastName     = row.getString("last_name");
         teacher.phone        = row.getInt("phone");
-        teacher.department   = row.getInt("department");
+        teacher.department   = row.getString("department");
         return teacher;
     }
 }

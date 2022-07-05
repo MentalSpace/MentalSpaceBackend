@@ -8,12 +8,10 @@ public class StudentRowMapper implements RowMapper<Student> {
     @Override
     public Student mapRow(ResultSet row, int rowNum) throws SQLException {
         Student student = new Student();
-        student.studentId    = row.getLong("student_id");
-        student.canonicalId  = row.getString("canonical_id");
-        student.firstName    = row.getString("first_name");
-        student.lastName     = row.getString("last_name");
-        student.phone        = row.getInt("phone");
-        student.grade        = row.getInt("grade");
+        student.subjectId = row.getLong("subject_id");
+        student.department = row.getString("department");
+        student.description = row.getString("description");
+        student.name = row.getString("name");
         return student;
     }
 }

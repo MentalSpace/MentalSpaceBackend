@@ -7,7 +7,7 @@ public class Period {
     public Long termId;
     public Integer period;
     public String classCode;
-    public boolean archived;
+    public Boolean archived;
 
     public Period() {
     }
