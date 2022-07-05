@@ -2,7 +2,7 @@ package dev.mentalspace.wafflecone.databaseobject;
 
 public class Assignment {
     public Long assignmentId;
-    public Long classId;
+    public Long periodId;
     public Long dateAssigned;
     public Long dateDue;
     public String type;
