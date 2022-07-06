@@ -10,11 +10,3 @@ public class Work {
     public Work() {
     }
 }
-
-/*Table "work" {
-  "work_id" int [pk, increment]
-  "student_id" INTEGER [not null]
-  "assignment_id" INTEGER [not null]
-  "remaining_time" BIGINT [not null]
-  "priority" INTEGER [not null]
-} */

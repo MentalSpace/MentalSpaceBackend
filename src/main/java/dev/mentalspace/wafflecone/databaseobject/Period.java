@@ -11,12 +11,3 @@ public class Period {
     public Period() {
     }
 }
-
-/*Table "period" {
-  "period_id" int [pk, increment]
-  "teacher_id" INTEGER [not null]
-  "subject_id" INTEGER [not null]
-  "period" INTEGER [not null]
-  "class_code" TEXT [not null]
-  "archived" BOOLEAN [not null, default: false]
-} */

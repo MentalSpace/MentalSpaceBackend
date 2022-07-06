@@ -11,12 +11,3 @@ public class Todo {
     public Todo() {
     }
 }
-
-/*Table "todo" {
-  "todo_id" int [pk, increment]
-  "work_id" INTEGER [not null]
-  "date" INTEGER [not null]
-  "planned_time" BIGINT
-  "projected_start_time" BIGINT
-  "priority" INTEGER [not null]
-} */

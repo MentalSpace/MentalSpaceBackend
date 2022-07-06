@@ -9,10 +9,3 @@ public class Enrollment {
     public Enrollment() {
     }   
 }
-
-/*Table "enrollment" {
-  "enrollment_id" int [pk, increment]
-  "student_id" INTEGER [not null]
-  "period_id" INTEGER [not null]
-  "student_preference" INTEGER
-} */

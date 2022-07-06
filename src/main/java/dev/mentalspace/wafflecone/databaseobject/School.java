@@ -9,10 +9,3 @@ public class School {
     public School() {
     }
 }
-
-/*Table "school" {
-  "school_id" int [pk, increment]
-  "short_name" TEXT [not null]
-  "name" TEXT [not null]
-  "address" TEXT [not null]
-} */

@@ -13,14 +13,3 @@ public class Assignment {
     public Assignment() {
     }  
 }
-
-/*Table "assignment" {
-  "assignment_id" int [pk, increment]
-  "period_id" INTEGER [not null]
-  "date_assigned" INTEGER [not null]
-  "date_due" INTEGER [not null]
-  "type" TEXT [not null]
-  "estimated_burden" INTEGER
-  "name" TEXT
-  "description" TEXT
-} */

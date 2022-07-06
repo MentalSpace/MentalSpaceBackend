@@ -11,12 +11,3 @@ public class Teacher {
     public Teacher() {
     }
 }
-
-/*Table "teacher" {
-  "teacher_id" int [pk, increment]
-  "canonical_id" TEXT [unique]
-  "first_name" TEXT [not null]
-  "last_name" TEXT [not null]
-  "phone" BIGINT
-  "department" TEXT [not null]
-} */

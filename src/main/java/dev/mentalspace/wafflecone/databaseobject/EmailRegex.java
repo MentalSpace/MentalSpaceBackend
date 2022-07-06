@@ -10,11 +10,3 @@ public class EmailRegex {
     public EmailRegex() {
     }
 }
-
-/*Table "email_regex" {
-  "email_regex_id" int [pk, increment]
-  "school_id" INTEGER [not null]
-  "match_domain" TEXT [not null]
-  "regex" TEXT [not null]
-  "permissions" INTEGER [not null, default: 0]
-} */

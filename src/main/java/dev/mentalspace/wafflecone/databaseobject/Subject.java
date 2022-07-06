@@ -9,10 +9,3 @@ public class Subject {
     public Subject() {
     }
 }
-
-/*Table "subject" {
-  "subject_id" int [pk, increment]
-  "department" TEXT [not null]
-  "description" TEXT
-  "name" TEXT [not null]
-} */
