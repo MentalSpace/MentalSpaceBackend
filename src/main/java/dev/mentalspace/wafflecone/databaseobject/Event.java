@@ -16,3 +16,17 @@ public class Event {
     public Event() {
     }
 }
+
+/*Table "event" {
+  "event_id" int [pk, increment]
+  "student_id" INTEGER [not null]
+  "name" TEXT [not null]
+  "description" TEXT
+  "start_time" BIGINT [not null]
+  "end_time" BIGINT [not null]
+  "start_date" INTEGER [not null]
+  "end_date" INTEGER
+  "recurring" INTEGER [not null]
+  "weekly_days" INTEGER
+  "monthly_days" INTEGER
+} */

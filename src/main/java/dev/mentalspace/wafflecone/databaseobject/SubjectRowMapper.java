@@ -4,14 +4,33 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import org.springframework.jdbc.core.RowMapper;
 
-public class StudentRowMapper implements RowMapper<Student> {
+public class SubjectRowMapper implements RowMapper<Subject> {
     @Override
-    public Student mapRow(ResultSet row, int rowNum) throws SQLException {
-        Student student = new Student();
-        student.subjectId = row.getLong("subject_id");
-        student.department = row.getString("department");
-        student.description = row.getString("description");
-        student.name = row.getString("name");
-        return student;
+    public Subject mapRow(ResultSet row, int rowNum) throws SQLException {
+        Subject subject = new Subject();
+        subject.subjectId    = row.getLong   ("subject_id");
+        subject.department   = row.getString ("department");
+        subject.description  = row.getString ("description");
+        subject.name         = row.getString ("name");
+        return subject;
     }
 }
+
+/*package dev.mentalspace.wafflecone.databaseobject;
+
+public class Subject {
+    public Long subjectId;
+    public String department;
+    public String description;
+    public String name;
+
+    public Subject() {
+    }
+}
+
+/*Table "subject" {
+  "subject_id" int [pk, increment]
+  "department" TEXT [not null]
+  "description" TEXT
+  "name" TEXT [not null]
+} */

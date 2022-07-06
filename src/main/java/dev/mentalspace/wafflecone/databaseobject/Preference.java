@@ -5,9 +5,18 @@ public class Preference {
     public Long studentId;
     public Integer assignmentOrder;
     public Integer startType;
-    public Integer breakLength;
-    public Integer breakFrequency;
+    public Long breakLength;
+    public Long breakFrequency;
 
     public Preference() {
     }
 }
+
+/*Table "preference" {
+  "preference_id" int [pk, increment]
+  "student_id" INTEGER [not null]
+  "assignment_order" INTEGER [not null]
+  "start_type" INTEGER [not null]
+  "break_length" INTEGER
+  "break_frequency" INTEGER
+} */
