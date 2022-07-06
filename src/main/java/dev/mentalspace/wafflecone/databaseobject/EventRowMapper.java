@@ -2,7 +2,11 @@ package dev.mentalspace.wafflecone.databaseobject;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import org.dmfs.rfc5545.recur.InvalidRecurrenceRuleException;
 import org.springframework.jdbc.core.RowMapper;
+
+import dev.mentalspace.wafflecone.WaffleConeController;
 
 public class EventRowMapper implements RowMapper<Event> {
     @Override
@@ -12,8 +16,13 @@ public class EventRowMapper implements RowMapper<Event> {
         event.studentId    = row.getLong   ("student_id");
         event.name         = row.getString ("name");
         event.description  = row.getString ("description");
-        event.rrule        = row.getString ("rrule");
+        event.rruleString  = row.getString ("rrule");
         event.duration     = row.getLong   ("duration");
+        try {
+            event.setRecuringTime();
+        } catch (InvalidRecurrenceRuleException e) {
+            
+        }
         return event;
     }
 }
