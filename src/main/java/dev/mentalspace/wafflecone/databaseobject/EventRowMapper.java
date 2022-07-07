@@ -17,7 +17,7 @@ public class EventRowMapper implements RowMapper<Event> {
         event.rruleString  = row.getString ("rrule_string");
         event.duration     = row.getLong   ("duration");
         try {
-            event.setRecuringTime();
+            event.setRecurringTime();
         } catch (InvalidRecurrenceRuleException e) {
             
         }
