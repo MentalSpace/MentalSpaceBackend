@@ -14,7 +14,7 @@ public class EventRowMapper implements RowMapper<Event> {
         event.studentId    = row.getLong   ("student_id");
         event.name         = row.getString ("name");
         event.description  = row.getString ("description");
-        event.rruleString  = row.getString ("rrule");
+        event.rruleString  = row.getString ("rrule_string");
         event.duration     = row.getLong   ("duration");
         try {
             event.setRecuringTime();
