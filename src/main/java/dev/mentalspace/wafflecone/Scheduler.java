@@ -9,7 +9,6 @@ import dev.mentalspace.wafflecone.databaseobject.Todo;
 
 public class Scheduler 
 {
-
     /**
      * Rounds up a time in epoch milliseconds to the next 5 min value (i.e. rounds 03:42:55 to 03:45:00).
      * @param time - epoch time in milliseconds 
@@ -33,6 +32,8 @@ public class Scheduler
     {
         return(time/300000) * 300000;
     }
+
+    
 
     /**
      * Schedules start times for todos within the time block.
@@ -280,39 +281,5 @@ public class Scheduler
         }
         
         return setTodos;
-    }
-
-
-    public static void main(String[] args) 
-    {
-        Todo[] todos = new Todo[4];
-        for(int j = 0; j < todos.length; j++)
-        {
-            todos[j] = new Todo();
-        }
-        
-        todos[0].plannedTime = 1800000L;
-        todos[1].plannedTime = 4980000L;
-        todos[2].plannedTime = 3600000L;
-        todos[3].plannedTime = 900000L;
-
-        long[] eventStart = {1657072800000L, 1657089000000L, 1657134000000L};
-        long[] eventEnd = {1657087200000L, 1657108200000L, 1657150800000L};
-        
-        Preference pref = new Preference();
-        pref.breakFrequency = 1800000L;
-        pref.breakLength = 300000L;
-
-        //ArrayList<Todo> test = scheduleBlock(eventStart[1], eventEnd[1], todos);
-        //ArrayList<Todo> test = schedule(pref, todos, eventStart, eventEnd, 1657065600000L, 1657152000000L);
-        ArrayList<Todo> test = scheduleALAP(pref, todos, eventStart, eventEnd, 16575600000L, 1657151999000L);
-
-        for(int i = 0; i < test.size(); i++)
-        {
-            System.out.println("Todo #" + i + " Start: " + test.get(i).projectedStartTime + ", End: " + (test.get(i).projectedStartTime + test.get(i).plannedTime));
-        }
-
-
-        
     }
 }
