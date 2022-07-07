@@ -1,4 +1,4 @@
-package dev.mentalspace.wafflecone.scheduler;
+package dev.mentalspace.wafflecone;
 
 import java.util.ArrayList;
 
@@ -70,14 +70,14 @@ public class Scheduler
 
 
     /**
-     * Schedules todo events for the day from earlier to later. If a todo does not fit in the schedule, the start and end times will not be set. 
+     * Schedules todo events for the period of time specified. If a todo does not fit in the schedule, start time will not be set. 
      * @param pref - student-inputted preference
      * @param todos - array of todos for the day in order of priority. Start times must be null.
      * @param eventStart - array of start times for events in epoch milliseconds in chronological ascending order.
      * @param eventEnd - array of start times for events in epoch milliseconds in chronological ascending order. 
      * @param start - the earliest a user can start on todos in epoch milliseconds.
-     * @param end - the latest a user can finish todos in epoch milliseconds.
-     * @return an array of todos with scheduled start and end times,
+     * @param end - the latest a user can finish todos in epoch milliseconds. 
+     * @return an Arraylist of todos with the projectedStartTime scheduled in chronological order. 
      */
     public static ArrayList<Todo> scheduleASAP(Preference pref, Todo[] todos, long[] eventStart, long[] eventEnd,  long start, long end)
     {
@@ -145,14 +145,14 @@ public class Scheduler
 
 
     /**
-     * Schedules todos as late as possible according to the end time designated by the user. Todos that do not fit will not be scheduled.
-     * @param pref - student's preferences
-     * @param todos - list of todos for the day in order of priority. 
+     * Schedules todos to be as late as possible according to the end time designated by the user. Todos that do not fit will not be scheduled.
+     * @param pref - student-inputted preference
+     * @param todos - array of todos for the day in order of priority. Start times must be null.
      * @param eventStart - array of start times for events in epoch milliseconds in chronological ascending order.
      * @param eventEnd - array of start times for events in epoch milliseconds in chronological ascending order. 
-     * @param day - the day that the schedule is being made for. Must be at 12 AM in epoch milliseconds. 
-     * @param end - the latest an event could be scheduled. 
-     * @return an Arraylist of the scheduled todos. 
+     * @param start - the earliest a user can start on todos in epoch milliseconds.
+     * @param end - the latest a user can finish todos in epoch milliseconds. 
+     * @return an Arraylist of todos with the projectedStartTime scheduled in chronological order. 
      */
     public static ArrayList<Todo> scheduleALAP(Preference pref, Todo[] todos, long[] eventStart, long[] eventEnd, long start, long end)
     {
