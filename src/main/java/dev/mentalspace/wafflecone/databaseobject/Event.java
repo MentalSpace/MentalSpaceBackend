@@ -17,11 +17,11 @@ public class Event {
     }
 
     public void setRecuringTime() throws InvalidRecurrenceRuleException {
-        this.rrule = new RecurrenceRule(this.rruleString);
+            this.rrule = new RecurrenceRule(this.rruleString);
     }
 
     public long getStartTimeForTheDay(long day) {
-        long next_instance = this.rrule.iterator(day, TimeZone.getDefault()).nextMillis();
+        long next_instance = this.rrule.iterator(day, TimeZone.getTimeZone("UTC")).nextMillis();
         if ((next_instance - day) > 86400000) {
             return 0;
         }

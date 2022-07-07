@@ -6,8 +6,6 @@ import java.sql.SQLException;
 import org.dmfs.rfc5545.recur.InvalidRecurrenceRuleException;
 import org.springframework.jdbc.core.RowMapper;
 
-import dev.mentalspace.wafflecone.WaffleConeController;
-
 public class EventRowMapper implements RowMapper<Event> {
     @Override
     public Event mapRow(ResultSet row, int rowNum) throws SQLException {
