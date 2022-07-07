@@ -16,7 +16,7 @@ public class Event {
     public Event() {
     }
 
-    public void setRecuringTime() throws InvalidRecurrenceRuleException {
+    public void setRecurringTime() throws InvalidRecurrenceRuleException {
             this.rrule = new RecurrenceRule(this.rruleString);
     }
 
