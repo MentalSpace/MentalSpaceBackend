@@ -33,24 +33,26 @@ public class Event {
         return (this.getStartTimeForTheDay(day) + this.duration);
     }
 
-    public JSONObject toJSON() {
+    public JSONObject toJsonObject() {
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("eventId",       this.eventId);
-        jsonObject.put("studentId",     this.studentId);
-        jsonObject.put("name",          this.name);
-        jsonObject.put("description",   this.description);
-        jsonObject.put("rruleString",   this.rruleString);
-        jsonObject.put("duration",      this.duration);
+        jsonObject
+            .put("eventId",       this.eventId)
+            .put("studentId",     this.studentId)
+            .put("name",          this.name)
+            .put("description",   this.description)
+            .put("rruleString",   this.rruleString)
+            .put("duration",      this.duration);
         return jsonObject;
     }
 
-    public JSONObject toJSON(JSONObject jsonObject) {
-        jsonObject.put("eventId",       this.eventId);
-        jsonObject.put("studentId",     this.studentId);
-        jsonObject.put("name",          this.name);
-        jsonObject.put("description",   this.description);
-        jsonObject.put("rruleString",   this.rruleString);
-        jsonObject.put("duration",      this.duration);
+    public JSONObject toJsonObject(JSONObject jsonObject) {
+        jsonObject
+            .put("eventId",       this.eventId)
+            .put("studentId",     this.studentId)
+            .put("name",          this.name)
+            .put("description",   this.description)
+            .put("rruleString",   this.rruleString)
+            .put("duration",      this.duration);
         return jsonObject;
     }
 }

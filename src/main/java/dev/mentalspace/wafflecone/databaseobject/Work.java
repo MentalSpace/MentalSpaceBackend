@@ -12,22 +12,24 @@ public class Work {
     public Work() {
     }
 
-    public JSONObject toJSON() {
+    public JSONObject toJsonObject() {
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("workId",        this.workId);
-        jsonObject.put("studentId",     this.studentId);
-        jsonObject.put("assignmentId",  this.assignmentId);
-        jsonObject.put("remainingTime", this.remainingTime);
-        jsonObject.put("priority",      this.priority);
+        jsonObject
+            .put("workId",        this.workId)
+            .put("studentId",     this.studentId)
+            .put("assignmentId",  this.assignmentId)
+            .put("remainingTime", this.remainingTime)
+            .put("priority",      this.priority);
         return jsonObject;
     }
 
-    public JSONObject toJSON(JSONObject jsonObject) {
-        jsonObject.put("workId",        this.workId);
-        jsonObject.put("studentId",     this.studentId);
-        jsonObject.put("assignmentId",  this.assignmentId);
-        jsonObject.put("remainingTime", this.remainingTime);
-        jsonObject.put("priority",      this.priority);
+    public JSONObject toJsonObject(JSONObject jsonObject) {
+        jsonObject
+            .put("workId",        this.workId)
+            .put("studentId",     this.studentId)
+            .put("assignmentId",  this.assignmentId)
+            .put("remainingTime", this.remainingTime)
+            .put("priority",      this.priority);
         return jsonObject;
     }
 }

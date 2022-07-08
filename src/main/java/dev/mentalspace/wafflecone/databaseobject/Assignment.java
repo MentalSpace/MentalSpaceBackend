@@ -15,28 +15,30 @@ public class Assignment {
     public Assignment() {
     }
 
-    public JSONObject toJSON() {
+    public JSONObject toJsonObject() {
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("assignmentId",       this.assignmentId);
-        jsonObject.put("periodId",           this.periodId);
-        jsonObject.put("dateAssigned",       this.dateAssigned);
-        jsonObject.put("dateDue",            this.dateDue);
-        jsonObject.put("type",               this.type);
-        jsonObject.put("estimatedBurden",    this.estimatedBurden);
-        jsonObject.put("name",               this.name);
-        jsonObject.put("description",        this.description);
+        jsonObject
+            .put("assignmentId",       this.assignmentId)
+            .put("periodId",           this.periodId)
+            .put("dateAssigned",       this.dateAssigned)
+            .put("dateDue",            this.dateDue)
+            .put("type",               this.type)
+            .put("estimatedBurden",    this.estimatedBurden)
+            .put("name",               this.name)
+            .put("description",        this.description);
         return jsonObject;
     }
 
-    public JSONObject toJSON(JSONObject jsonObject) {
-        jsonObject.put("assignmentId",       this.assignmentId);
-        jsonObject.put("periodId",           this.periodId);
-        jsonObject.put("dateAssigned",       this.dateAssigned);
-        jsonObject.put("dateDue",            this.dateDue);
-        jsonObject.put("type",               this.type);
-        jsonObject.put("estimatedBurden",    this.estimatedBurden);
-        jsonObject.put("name",               this.name);
-        jsonObject.put("description",        this.description);
+    public JSONObject toJsonObject(JSONObject jsonObject) {
+        jsonObject
+            .put("assignmentId",       this.assignmentId)
+            .put("periodId",           this.periodId)
+            .put("dateAssigned",       this.dateAssigned)
+            .put("dateDue",            this.dateDue)
+            .put("type",               this.type)
+            .put("estimatedBurden",    this.estimatedBurden)
+            .put("name",               this.name)
+            .put("description",        this.description);
         return jsonObject;
     }
 }

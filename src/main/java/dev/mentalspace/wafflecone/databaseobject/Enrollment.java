@@ -11,20 +11,22 @@ public class Enrollment {
     public Enrollment() {
     }
 
-    public JSONObject toJSON() {
+    public JSONObject toJsonObject() {
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("enrollmentId",      this.enrollmentId);
-        jsonObject.put("studentId",         this.studentId);
-        jsonObject.put("periodId",          this.periodId);
-        jsonObject.put("studentPreference", this.studentPreference);
+        jsonObject
+            .put("enrollmentId",      this.enrollmentId)
+            .put("studentId",         this.studentId)
+            .put("periodId",          this.periodId)
+            .put("studentPreference", this.studentPreference);
         return jsonObject;
     }
 
-    public JSONObject toJSON(JSONObject jsonObject) {
-        jsonObject.put("enrollmentId",      this.enrollmentId);
-        jsonObject.put("studentId",         this.studentId);
-        jsonObject.put("periodId",          this.periodId);
-        jsonObject.put("studentPreference", this.studentPreference);
+    public JSONObject toJsonObject(JSONObject jsonObject) {
+        jsonObject
+            .put("enrollmentId",      this.enrollmentId)
+            .put("studentId",         this.studentId)
+            .put("periodId",          this.periodId)
+            .put("studentPreference", this.studentPreference);
         return jsonObject;
     }
 }

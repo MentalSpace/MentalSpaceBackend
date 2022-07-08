@@ -12,22 +12,24 @@ public class EmailRegex {
     public EmailRegex() {
     }
 
-    public JSONObject toJSON() {
+    public JSONObject toJsonObject() {
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("emailRegexId",  this.emailRegexId);
-        jsonObject.put("schoolId",      this.schoolId);
-        jsonObject.put("matchDomain",   this.matchDomain);
-        jsonObject.put("regex",         this.regex);
-        jsonObject.put("permissions",   this.permissions);
+        jsonObject
+            .put("emailRegexId",  this.emailRegexId)
+            .put("schoolId",      this.schoolId)
+            .put("matchDomain",   this.matchDomain)
+            .put("regex",         this.regex)
+            .put("permissions",   this.permissions);
         return jsonObject;
     }
 
-    public JSONObject toJSON(JSONObject jsonObject) {
-        jsonObject.put("emailRegexId",  this.emailRegexId);
-        jsonObject.put("schoolId",      this.schoolId);
-        jsonObject.put("matchDomain",   this.matchDomain);
-        jsonObject.put("regex",         this.regex);
-        jsonObject.put("permissions",   this.permissions);
+    public JSONObject toJsonObject(JSONObject jsonObject) {
+        jsonObject
+            .put("emailRegexId",  this.emailRegexId)
+            .put("schoolId",      this.schoolId)
+            .put("matchDomain",   this.matchDomain)
+            .put("regex",         this.regex)
+            .put("permissions",   this.permissions);
         return jsonObject;
     }
 }

@@ -11,20 +11,22 @@ public class School {
     public School() {
     }
 
-    public JSONObject toJSON() {
+    public JSONObject toJsonObject() {
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("schoolId",  this.schoolId);
-        jsonObject.put("shortName", this.shortName);
-        jsonObject.put("name",      this.name);
-        jsonObject.put("address",   this.address);
+        jsonObject
+            .put("schoolId",  this.schoolId)
+            .put("shortName", this.shortName)
+            .put("name",      this.name)
+            .put("address",   this.address);
         return jsonObject;
     }
 
-    public JSONObject toJSON(JSONObject jsonObject) {
-        jsonObject.put("schoolId",  this.schoolId);
-        jsonObject.put("shortName", this.shortName);
-        jsonObject.put("name",      this.name);
-        jsonObject.put("address",   this.address);
+    public JSONObject toJsonObject(JSONObject jsonObject) {
+        jsonObject
+            .put("schoolId",  this.schoolId)
+            .put("shortName", this.shortName)
+            .put("name",      this.name)
+            .put("address",   this.address);
         return jsonObject;
     }
 }

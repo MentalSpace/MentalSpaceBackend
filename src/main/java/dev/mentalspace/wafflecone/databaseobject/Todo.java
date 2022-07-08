@@ -13,24 +13,26 @@ public class Todo {
     public Todo() {
     }
 
-    public JSONObject toJSON() {
+    public JSONObject toJsonObject() {
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("todoId",                this.todoId);
-        jsonObject.put("workId",                this.workId);
-        jsonObject.put("date",                  this.date);
-        jsonObject.put("plannedTime",           this.plannedTime);
-        jsonObject.put("projectedStartTime",    this.projectedStartTime);
-        jsonObject.put("priority",              this.priority);
+        jsonObject
+            .put("todoId",                this.todoId)
+            .put("workId",                this.workId)
+            .put("date",                  this.date)
+            .put("plannedTime",           this.plannedTime)
+            .put("projectedStartTime",    this.projectedStartTime)
+            .put("priority",              this.priority);
         return jsonObject;
     }
 
-    public JSONObject toJSON(JSONObject jsonObject) {
-        jsonObject.put("todoId",                this.todoId);
-        jsonObject.put("workId",                this.workId);
-        jsonObject.put("date",                  this.date);
-        jsonObject.put("plannedTime",           this.plannedTime);
-        jsonObject.put("projectedStartTime",    this.projectedStartTime);
-        jsonObject.put("priority",              this.priority);
+    public JSONObject toJsonObject(JSONObject jsonObject) {
+        jsonObject
+            .put("todoId",                this.todoId)
+            .put("workId",                this.workId)
+            .put("date",                  this.date)
+            .put("plannedTime",           this.plannedTime)
+            .put("projectedStartTime",    this.projectedStartTime)
+            .put("priority",              this.priority);
         return jsonObject;
     }
 }

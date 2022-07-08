@@ -13,24 +13,26 @@ public class Preference {
     public Preference() {
     }
 
-    public JSONObject toJSON() {
+    public JSONObject toJsonObject() {
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("preferenceId",      this.preferenceId);
-        jsonObject.put("studentId",         this.studentId);
-        jsonObject.put("assignmentOrder",   this.assignmentOrder);
-        jsonObject.put("startType",         this.startType);
-        jsonObject.put("breakLength",       this.breakLength);
-        jsonObject.put("breakFrequency",    this.breakFrequency);
+        jsonObject
+            .put("preferenceId",      this.preferenceId)
+            .put("studentId",         this.studentId)
+            .put("assignmentOrder",   this.assignmentOrder)
+            .put("startType",         this.startType)
+            .put("breakLength",       this.breakLength)
+            .put("breakFrequency",    this.breakFrequency);
         return jsonObject;
     }
 
-    public JSONObject toJSON(JSONObject jsonObject) {
-        jsonObject.put("preferenceId",      this.preferenceId);
-        jsonObject.put("studentId",         this.studentId);
-        jsonObject.put("assignmentOrder",   this.assignmentOrder);
-        jsonObject.put("startType",         this.startType);
-        jsonObject.put("breakLength",       this.breakLength);
-        jsonObject.put("breakFrequency",    this.breakFrequency);
+    public JSONObject toJsonObject(JSONObject jsonObject) {
+        jsonObject
+            .put("preferenceId",      this.preferenceId)
+            .put("studentId",         this.studentId)
+            .put("assignmentOrder",   this.assignmentOrder)
+            .put("startType",         this.startType)
+            .put("breakLength",       this.breakLength)
+            .put("breakFrequency",    this.breakFrequency);
         return jsonObject;
     }
 }
