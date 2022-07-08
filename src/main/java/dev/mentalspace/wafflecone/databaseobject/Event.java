@@ -1,6 +1,7 @@
 package dev.mentalspace.wafflecone.databaseobject;
 
 import java.util.TimeZone;
+import org.json.JSONObject;
 
 import org.dmfs.rfc5545.recur.*;
 
@@ -30,5 +31,26 @@ public class Event {
 
     public long getEndTimeForTheDay(long day) {
         return (this.getStartTimeForTheDay(day) + this.duration);
+    }
+
+    public JSONObject toJSON() {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("eventId",       this.eventId);
+        jsonObject.put("studentId",     this.studentId);
+        jsonObject.put("name",          this.name);
+        jsonObject.put("description",   this.description);
+        jsonObject.put("rruleString",   this.rruleString);
+        jsonObject.put("duration",      this.duration);
+        return jsonObject;
+    }
+
+    public JSONObject toJSON(JSONObject jsonObject) {
+        jsonObject.put("eventId",       this.eventId);
+        jsonObject.put("studentId",     this.studentId);
+        jsonObject.put("name",          this.name);
+        jsonObject.put("description",   this.description);
+        jsonObject.put("rruleString",   this.rruleString);
+        jsonObject.put("duration",      this.duration);
+        return jsonObject;
     }
 }
