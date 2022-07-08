@@ -1,4 +1,4 @@
-package dev.mentalspace.wafflecone.databaseobject;
+package dev.mentalspace.wafflecone.todo;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -20,6 +20,18 @@ import org.springframework.transaction.annotation.Transactional;
 public class TodoService {
     @Autowired
     private JdbcTemplate jdbcTemplate;
+
+    public boolean existsById(Long id) {
+		String sql = "SELECT COUNT(*) FROM todo WHERE todo_id = ?;";
+		int count = jdbcTemplate.queryForObject(sql, Integer.class, id);
+		return count != 0;
+	}
+
+    public boolean existsByIdAndWorkId(Long t_id, long w_id) {
+		String sql = "SELECT COUNT(*) FROM todo WHERE todo_id = ? AND work_id = ?;";
+		int count = jdbcTemplate.queryForObject(sql, Integer.class, t_id, w_id);
+		return count != 0;
+	}
 
     public Todo getById(long id) {
         String sql = "SELECT todo_id, work_id, date, planned_time, projected_start_time, priority FROM todo "
