@@ -12,10 +12,11 @@ public class Period {
 
     boolean regenerateClassCode;
     boolean archivedOnly;
-    
+
     public void setRegenerateClassCode(boolean regenerateClassCode) {
         this.regenerateClassCode = regenerateClassCode;
     }
+
     public void setArchivedOnly(boolean archivedOnly) {
         this.archivedOnly = archivedOnly;
     }
@@ -25,13 +26,9 @@ public class Period {
 
     // Used only for response output.
     public JSONObject toJsonObject() {
-        JSONObject jsonObj = new JSONObject()
-            .put("classId", this.periodId)
-            .put("teacherId", this.teacherId)
-            .put("subjectId", this.subjectId)
-            .put("period", this.period)
-            .put("classCode", this.classCode)
-            .put("archived", this.archived);
+        JSONObject jsonObj = new JSONObject().put("classId", this.periodId).put("teacherId", this.teacherId)
+                .put("subjectId", this.subjectId).put("period", this.period).put("classCode", this.classCode)
+                .put("archived", this.archived);
 
         return jsonObj;
     }

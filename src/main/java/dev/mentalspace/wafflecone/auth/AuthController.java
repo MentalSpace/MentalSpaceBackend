@@ -38,10 +38,8 @@ public class AuthController {
 
     @GetMapping("/csrf")
     public ResponseEntity<String> getCsrfToken(CsrfToken token) {
-        JSONObject response = new JSONObject()
-                .put("csrfToken", token.getToken())
-                .put("paramName", token.getParameterName())
-                .put("headerName", token.getHeaderName())
+        JSONObject response = new JSONObject().put("csrfToken", token.getToken())
+                .put("paramName", token.getParameterName()).put("headerName", token.getHeaderName())
                 .put("status", "success");
         return ResponseEntity.status(HttpStatus.OK).body(response.toString());
     }
@@ -83,10 +81,8 @@ public class AuthController {
         newAuthToken.loadUsingRefreshToken(newRefreshToken, rawAuthApiKey);
         authTokenService.add(newAuthToken);
 
-        Response response = new Response("success")
-                .put("userId", newRefreshToken.userId)
-                .put("accessToken", rawAuthApiKey)
-                .put("accessTokenExpiry", newAuthToken.expirationTime)
+        Response response = new Response("success").put("userId", newRefreshToken.userId)
+                .put("accessToken", rawAuthApiKey).put("accessTokenExpiry", newAuthToken.expirationTime)
                 .put("refreshTokenExpiry", newRefreshToken.expirationTime);
         return ResponseEntity.status(HttpStatus.OK).headers(headers).body(response.toString());
     }

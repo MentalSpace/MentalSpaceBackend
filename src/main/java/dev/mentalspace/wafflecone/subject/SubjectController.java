@@ -35,22 +35,20 @@ import dev.mentalspace.wafflecone.user.UserService;
 import dev.mentalspace.wafflecone.user.UserType;
 
 @RestController
-@RequestMapping(path={"/api/v0/subject"})
+@RequestMapping(path = { "/api/v0/subject" })
 public class SubjectController {
-    @Autowired
+	@Autowired
 	UserService userService;
 	@Autowired
 	RefreshTokenService refreshTokenService;
 	@Autowired
 	AuthTokenService authTokenService;
-    @Autowired
-    SubjectService subjectService;
+	@Autowired
+	SubjectService subjectService;
 
-	@PostMapping(path={""})
-	public ResponseEntity<String> createSubject(
-		@RequestHeader("Authorization") String authApiKey,
-		@RequestBody Subject createDetails
-	) {
+	@PostMapping(path = { "" })
+	public ResponseEntity<String> createSubject(@RequestHeader("Authorization") String authApiKey,
+			@RequestBody Subject createDetails) {
 		AuthToken authToken = authTokenService.verifyBearerKey(authApiKey);
 		if (!authToken.valid) {
 			JSONObject errors = new JSONObject().put("accessToken", ErrorString.INVALID_ACCESS_TOKEN);
@@ -84,15 +82,14 @@ public class SubjectController {
 		// add new Subject
 		subjectService.addSubject(createDetails);
 		WaffleConeController.logger.debug("New Subject ID: " + createDetails.subjectId);
-		
+
 		Response response = new Response("success").put("subjectId", createDetails.subjectId);
 		return ResponseEntity.status(returnStatus).body(response.toString());
 	}
 
 	@GetMapping("")
-	public ResponseEntity<String> getSubject(
-		@RequestHeader("Authorization") String authApiKey,
-		@RequestParam(value = "subjectId", defaultValue = "-1") Long subjectId) {
+	public ResponseEntity<String> getSubject(@RequestHeader("Authorization") String authApiKey,
+			@RequestParam(value = "subjectId", defaultValue = "-1") Long subjectId) {
 		AuthToken authToken = authTokenService.verifyBearerKey(authApiKey);
 		if (!authToken.valid) {
 			JSONObject errors = new JSONObject().put("accessToken", ErrorString.INVALID_ACCESS_TOKEN);
@@ -106,17 +103,13 @@ public class SubjectController {
 		}
 
 		Subject subject = subjectService.getById(subjectId);
-		return ResponseEntity.status(HttpStatus.OK).body(
-			new Response("success")
-				.put("subject", subject.toJsonObject())
-				.toString()
-		);
+		return ResponseEntity.status(HttpStatus.OK)
+				.body(new Response("success").put("subject", subject.toJsonObject()).toString());
 	}
 
 	@PatchMapping("")
-	public ResponseEntity<String> patchSubject(
-		@RequestHeader("Authorization") String authApiKey,
-		@RequestBody Subject patchDetails) {
+	public ResponseEntity<String> patchSubject(@RequestHeader("Authorization") String authApiKey,
+			@RequestBody Subject patchDetails) {
 		AuthToken authToken = authTokenService.verifyBearerKey(authApiKey);
 		if (!authToken.valid) {
 			JSONObject errors = new JSONObject().put("accessToken", ErrorString.INVALID_ACCESS_TOKEN);
@@ -132,7 +125,7 @@ public class SubjectController {
 			JSONObject errors = new JSONObject().put("subjectId", ErrorString.SUBJECT_NOT_FOUND);
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(errors).toString());
 		}
-		
+
 		Subject subject = subjectService.getById(patchDetails.subjectId);
 		subject.updateDetails(patchDetails);
 		subjectService.updateSubject(subject);
@@ -141,9 +134,8 @@ public class SubjectController {
 	}
 
 	@DeleteMapping("")
-	public ResponseEntity<String> deleteSubject(
-		@RequestHeader("Authorization") String authApiKey,
-		@RequestParam(value = "subjectId", defaultValue = "-1") long subjectId) {
+	public ResponseEntity<String> deleteSubject(@RequestHeader("Authorization") String authApiKey,
+			@RequestParam(value = "subjectId", defaultValue = "-1") long subjectId) {
 		AuthToken authToken = authTokenService.verifyBearerKey(authApiKey);
 		if (!authToken.valid) {
 			JSONObject errors = new JSONObject().put("accessToken", ErrorString.INVALID_ACCESS_TOKEN);
@@ -161,7 +153,7 @@ public class SubjectController {
 		}
 
 		subjectService.deleteSubjectById(subjectId);
-		
+
 		return ResponseEntity.status(HttpStatus.OK).body(new Response("success").toString());
 	}
 }
