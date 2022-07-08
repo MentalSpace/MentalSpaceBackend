@@ -143,7 +143,7 @@ public class SubjectController {
 	@DeleteMapping("")
 	public ResponseEntity<String> deleteSubject(
 		@RequestHeader("Authorization") String authApiKey,
-		@RequestBody Subject deleteDetails) {
+		@RequestParam(value = "subjectId", defaultValue = "-1") long subjectId) {
 		AuthToken authToken = authTokenService.verifyBearerKey(authApiKey);
 		if (!authToken.valid) {
 			JSONObject errors = new JSONObject().put("accessToken", ErrorString.INVALID_ACCESS_TOKEN);
@@ -155,12 +155,12 @@ public class SubjectController {
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse(errors).toString());
 		}
 
-		if (!subjectService.existsById(deleteDetails.subjectId)) {
+		if (!subjectService.existsById(subjectId)) {
 			JSONObject errors = new JSONObject().put("subjectId", ErrorString.SUBJECT_NOT_FOUND);
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(errors).toString());
 		}
 
-		subjectService.deleteSubject(deleteDetails);
+		subjectService.deleteSubjectById(subjectId);
 		
 		return ResponseEntity.status(HttpStatus.OK).body(new Response("success").toString());
 	}

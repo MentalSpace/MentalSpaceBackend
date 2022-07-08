@@ -232,7 +232,7 @@ public class UserController {
 		return ResponseEntity.status(returnStatus).body(new Response("success").toString());
 	}
 
-	@DeleteMapping(path = "", consumes={MediaType.APPLICATION_JSON_VALUE})
+	@PostMapping(path = "/delete", consumes={MediaType.APPLICATION_JSON_VALUE})
 	public ResponseEntity<String> deleteUser(
 		@RequestHeader("Authorization") String authApiKey,
 		@RequestBody User deleteDetails) {
