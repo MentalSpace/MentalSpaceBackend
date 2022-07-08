@@ -53,7 +53,7 @@ public class WorkService {
 
     public void addWork(Work work) {
         String sql = 
-            "INSERT INTO work (student_id, assignment_id, remaining_time, priority) " + 
+            "INSERT INTO work (student_id, assignment_id, remaining_time, priority) VALUES " + 
             "(?, ?, ?, ?);";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(

@@ -21,6 +21,12 @@ public class PeriodService {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 
+    public boolean existsById(long id) {
+        String sql = "SELECT COUNT(*) FROM period WHERE period_id = ?;";
+        int count = jdbcTemplate.queryForObject(sql, Integer.class, id);
+        return count != 0;
+    }
+
     public Period getById(long id) {
         String sql = 
             "SELECT period_id, teacher_id, subject_id, period, class_code, archived " + 
@@ -113,7 +119,7 @@ public class PeriodService {
 
     public void addPeriod (Period period) {
         String sql = 
-            "INSERT INTO period (teacher_id, subject_id, class_code, archived) " + 
+            "INSERT INTO period (teacher_id, subject_id, class_code, archived) VALUES " + 
             "(?, ?, ?, ?, ?);";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(

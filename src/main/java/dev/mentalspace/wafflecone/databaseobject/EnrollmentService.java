@@ -30,9 +30,15 @@ public class EnrollmentService {
         return enrollment;
     }
 
-    public void addEnrollment (Enrollment enrollment) {
+    public boolean isEnrolled(long studentId, long periodId) {
+        String sql = "SELECT COUNT(*) FROM enrollment WHERE student_id = ? AND period_id = ?;";
+        int count = jdbcTemplate.queryForObject(sql, Integer.class, studentId, periodId);
+        return count != 0;
+    }
+
+    public void addEnrollment(Enrollment enrollment) {
         String sql = 
-            "INSERT INTO enrollment (student_id, period_id, student_preference) " + 
+            "INSERT INTO enrollment (student_id, period_id, student_preference) VALUES " + 
             "(?, ?, ?);";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(

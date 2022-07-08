@@ -33,7 +33,7 @@ public class SchoolService {
 
     public void addSchool (School school) {
         String sql = 
-            "INSERT INTO school (short_name, name, address) " + 
+            "INSERT INTO school (short_name, name, address) VALUES " + 
             "(?, ?, ?);";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(

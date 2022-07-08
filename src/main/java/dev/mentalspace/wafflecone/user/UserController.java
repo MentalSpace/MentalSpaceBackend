@@ -94,7 +94,7 @@ public class UserController {
 		registerDetails.password = Utils.encodePassword(registerDetails.password);
 		userService.add(registerDetails);
 		
-		Response response = new Response("success").put("user_id", registerDetails.userId);
+		Response response = new Response("success").put("userId", registerDetails.userId);
 		return ResponseEntity.status(returnStatus).body(response.toString());
 	}
 

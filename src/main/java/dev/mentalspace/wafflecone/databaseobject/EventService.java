@@ -43,7 +43,7 @@ public class EventService {
 
     public void addEvent(Event event) {
         String sql = 
-            "INSERT INTO event (student_id, name, description, rrule_string, duration) " + 
+            "INSERT INTO event (student_id, name, description, rrule_string, duration) VALUES " + 
             "(?, ?, ?, ?, ?);";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(

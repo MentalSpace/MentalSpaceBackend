@@ -43,7 +43,7 @@ public class PreferenceService {
 
     public void addPreference(Preference preference) {
         String sql = 
-            "INSERT INTO preference (student_id, assignment_order, start_type, break_length, break_frequency) " + 
+            "INSERT INTO preference (student_id, assignment_order, start_type, break_length, break_frequency) VALUES " + 
             "(?, ?, ?, ?, ?);";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(

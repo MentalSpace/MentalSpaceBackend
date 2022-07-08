@@ -51,7 +51,7 @@ public class TeacherController {
 		}
 		User loggedInUser = userService.getById(authToken.userId);
 		
-		// negated logic for clarity
+		// negated logic for cleanliness
 		if (loggedInUser.type != UserType.TEACHER) {
 			JSONObject errors = new JSONObject().put("user", ErrorString.USER_TYPE);
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse(errors).toString());
@@ -107,7 +107,7 @@ public class TeacherController {
 	}
 
 	@PatchMapping(path = "", consumes={MediaType.APPLICATION_JSON_VALUE})
-	public ResponseEntity<String> patchStudent(
+	public ResponseEntity<String> patchTeacher(
 		@RequestHeader("Authorization") String authApiKey,
 		@RequestBody Teacher patchDetails) {
 		AuthToken authToken = authTokenService.verifyBearerKey(authApiKey);

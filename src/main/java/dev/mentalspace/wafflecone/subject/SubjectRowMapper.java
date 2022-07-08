@@ -1,4 +1,4 @@
-package dev.mentalspace.wafflecone.databaseobject;
+package dev.mentalspace.wafflecone.subject;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

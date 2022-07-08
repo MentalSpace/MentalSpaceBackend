@@ -65,7 +65,7 @@ public class TodoService {
 
     public void addTodo(Todo todo) {
         String sql = 
-            "INSERT INTO todo (work_id, date, planned_time, projected_start_time, priority) " + 
+            "INSERT INTO todo (work_id, date, planned_time, projected_start_time, priority) VALUES " + 
             "(?, ?, ?, ?, ?);";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(

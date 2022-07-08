@@ -29,11 +29,19 @@ public class ErrorString {
 	public static final String ALREADY_INITIALIZED = "This user account is already initialized. Send a PATCH request instead?";
 	public static final String INVALID_ID = "The ID you are searching for is invalid";
 
+	public static final String DEPARTMENT_EMPTY = emptyString("department");
+	public static final String NAME_EMPTY = emptyString("name");
+	public static final String SUBJECT_NOT_FOUND = notFound("subjectId");
+
 	public static String inUseString(String field) {
 		return field + " is already in use";
 	}
 
 	public static String emptyString(String field) {
 		return "Required field: " + field + " is empty";
+	}
+
+	public static String notFound(String field) {
+		return "Resource with that " + field + " was not found";
 	}
 }

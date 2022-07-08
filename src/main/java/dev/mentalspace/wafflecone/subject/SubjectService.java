@@ -1,4 +1,4 @@
-package dev.mentalspace.wafflecone.databaseobject;
+package dev.mentalspace.wafflecone.subject;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -31,9 +31,19 @@ public class SubjectService {
         return subject;
     }
 
+    public boolean existsById(long id) {
+        String sql = "SELECT COUNT(*) FROM subject WHERE subject_id = ?;";
+        int count = jdbcTemplate.queryForObject(sql, Integer.class, id);
+        return count != 0;
+    }
+
+    public boolean existsBySubject(Subject subject) {
+        return existsById(subject.subjectId);
+    }
+
     public void addSubject (Subject subject) {
         String sql = 
-            "INSERT INTO subject (department, description, name) " + 
+            "INSERT INTO subject (department, description, name) VALUES " + 
             "(?, ?, ?);";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(

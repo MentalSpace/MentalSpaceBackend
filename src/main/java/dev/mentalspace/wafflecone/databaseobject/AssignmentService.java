@@ -43,7 +43,7 @@ public class AssignmentService {
 
     public void addAssignment(Assignment assignment) {
         String sql = 
-            "INSERT INTO assignment (period_id, date_assigned, date_due, type, estimated_burden, name, description) " + 
+            "INSERT INTO assignment (period_id, date_assigned, date_due, type, estimated_burden, name, description) VALUES " + 
             "(?, ?, ?, ?, ?, ?, ?);";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(
