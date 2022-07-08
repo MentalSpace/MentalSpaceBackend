@@ -22,7 +22,7 @@ public class WorkService {
     private JdbcTemplate jdbcTemplate;
 
     public Work getById(long id) {
-        String sql = "SELECT work_id, student_id, assignment_id, remaining_time, priority " + "FROM work "
+        String sql = "SELECT work_id, student_id, assignment_id, remaining_time, priority FROM work "
                 + "WHERE work_id = ?;";
         RowMapper<Work> rowMapper = new WorkRowMapper();
         Work work = jdbcTemplate.queryForObject(sql, rowMapper, id);
@@ -30,7 +30,7 @@ public class WorkService {
     }
 
     public List<Work> getByStudentId(long id) {
-        String sql = "SELECT work_id, student_id, assignment_id, remaining_time, priority " + "FROM work "
+        String sql = "SELECT work_id, student_id, assignment_id, remaining_time, priority FROM work "
                 + "WHERE student_id = ?;";
         RowMapper<Work> rowMapper = new WorkRowMapper();
         List<Work> works = jdbcTemplate.query(sql, rowMapper, id);
@@ -38,7 +38,7 @@ public class WorkService {
     }
 
     public List<Work> getByAssignmentId(long id) {
-        String sql = "SELECT work_id, student_id, assignment_id, remaining_time, priority " + "FROM work "
+        String sql = "SELECT work_id, student_id, assignment_id, remaining_time, priority FROM work "
                 + "WHERE assignment_id = ?;";
         RowMapper<Work> rowMapper = new WorkRowMapper();
         List<Work> works = jdbcTemplate.query(sql, rowMapper, id);
@@ -46,7 +46,7 @@ public class WorkService {
     }
 
     public void addWork(Work work) {
-        String sql = "INSERT INTO work (student_id, assignment_id, remaining_time, priority) VALUES " + "(?, ?, ?, ?);";
+        String sql = "INSERT INTO work (student_id, assignment_id, remaining_time, priority) VALUES (?, ?, ?, ?);";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(new PreparedStatementCreator() {
             public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
@@ -63,7 +63,7 @@ public class WorkService {
     }
 
     public void updateWork(Work work) {
-        String sql = "UPDATE work SET " + "student_id = ?, assignment_id = ?, remaining_time = ?, priority = ? "
+        String sql = "UPDATE work SET student_id = ?, assignment_id = ?, remaining_time = ?, priority = ? "
                 + "WHERE assignment_id = ?;";
         jdbcTemplate.update(new PreparedStatementCreator() {
             public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
@@ -79,7 +79,7 @@ public class WorkService {
     }
 
     public void deleteWork(Work work) {
-        String sql = "DELETE FROM work " + "WHERE work_id = ?;";
+        String sql = "DELETE FROM work WHERE work_id = ?;";
         jdbcTemplate.update(new PreparedStatementCreator() {
             public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
                 PreparedStatement ps = connection.prepareStatement(sql);

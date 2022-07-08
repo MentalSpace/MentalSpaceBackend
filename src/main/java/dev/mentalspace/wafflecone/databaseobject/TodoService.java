@@ -22,7 +22,7 @@ public class TodoService {
     private JdbcTemplate jdbcTemplate;
 
     public Todo getById(long id) {
-        String sql = "SELECT todo_id, work_id, date, planned_time, projected_start_time, priority " + "FROM todo "
+        String sql = "SELECT todo_id, work_id, date, planned_time, projected_start_time, priority FROM todo "
                 + "WHERE todo_id = ?;";
         RowMapper<Todo> rowMapper = new TodoRowMapper();
         Todo todo = jdbcTemplate.queryForObject(sql, rowMapper, id);
@@ -30,7 +30,7 @@ public class TodoService {
     }
 
     public List<Todo> getByWorkId(long id) {
-        String sql = "SELECT todo_id, work_id, date, planned_time, projected_start_time, priority " + "FROM todo "
+        String sql = "SELECT todo_id, work_id, date, planned_time, projected_start_time, priority FROM todo "
                 + "WHERE woek_id = ?;";
         RowMapper<Todo> rowMapper = new TodoRowMapper();
         List<Todo> todos = jdbcTemplate.query(sql, rowMapper, id);
@@ -39,7 +39,7 @@ public class TodoService {
 
     public List<Todo> getByStudentId(long id) {
         String sql = "SELECT todo_id, work_id, date, planned_time, projected_start_time, priority "
-                + "FROM todo JOIN work " + "ON todo.work_id = work.work_id " + "WHERE student_id = ?;";
+                + "FROM todo JOIN work ON todo.work_id = work.work_id WHERE student_id = ?;";
         RowMapper<Todo> rowMapper = new TodoRowMapper();
         List<Todo> todos = jdbcTemplate.query(sql, rowMapper, id);
         return todos;
@@ -47,7 +47,7 @@ public class TodoService {
 
     public List<Todo> getByWorkIdAndStudentId(long work, long student) {
         String sql = "SELECT todo_id, work_id, date, planned_time, projected_start_time, priority "
-                + "FROM todo JOIN work " + "ON todo.work_id = work.work_id " + "WHERE work_id = ? AND student_id = ?;";
+                + "FROM todo JOIN work ON todo.work_id = work.work_id WHERE work_id = ? AND student_id = ?;";
         RowMapper<Todo> rowMapper = new TodoRowMapper();
         List<Todo> todos = jdbcTemplate.query(sql, rowMapper, work, student);
         return todos;
@@ -91,7 +91,7 @@ public class TodoService {
     }
 
     public void deleteTodo(Todo todo) {
-        String sql = "DELETE FROM todo " + "WHERE todo_id = ?;";
+        String sql = "DELETE FROM todo WHERE todo_id = ?;";
         jdbcTemplate.update(new PreparedStatementCreator() {
             public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
                 PreparedStatement ps = connection.prepareStatement(sql);

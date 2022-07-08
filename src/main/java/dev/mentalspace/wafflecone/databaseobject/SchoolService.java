@@ -22,14 +22,14 @@ public class SchoolService {
     private JdbcTemplate jdbcTemplate;
 
     public School getById(long id) {
-        String sql = "SELECT school_id, short_name, name, address " + "FROM school " + "WHERE school_id = ?;";
+        String sql = "SELECT school_id, short_name, name, address FROM school WHERE school_id = ?;";
         RowMapper<School> rowMapper = new SchoolRowMapper();
         School school = jdbcTemplate.queryForObject(sql, rowMapper, id);
         return school;
     }
 
     public void addSchool(School school) {
-        String sql = "INSERT INTO school (short_name, name, address) VALUES " + "(?, ?, ?);";
+        String sql = "INSERT INTO school (short_name, name, address) VALUES (?, ?, ?);";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(new PreparedStatementCreator() {
             public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
@@ -45,7 +45,7 @@ public class SchoolService {
     }
 
     public void updateSchool(School school) {
-        String sql = "UPDATE school SET " + "short_name = ?, name = ?, address = ? " + "WHERE school_id = ?;";
+        String sql = "UPDATE school SET short_name = ?, name = ?, address = ? WHERE school_id = ?;";
         jdbcTemplate.update(new PreparedStatementCreator() {
             public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
                 PreparedStatement ps = connection.prepareStatement(sql);
@@ -59,7 +59,7 @@ public class SchoolService {
     }
 
     public void deleteSchool(School school) {
-        String sql = "DELETE FROM school " + "WHERE aschool_id = ?;";
+        String sql = "DELETE FROM school WHERE aschool_id = ?;";
         jdbcTemplate.update(new PreparedStatementCreator() {
             public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
                 PreparedStatement ps = connection.prepareStatement(sql);

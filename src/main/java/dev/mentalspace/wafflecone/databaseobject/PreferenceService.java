@@ -23,7 +23,7 @@ public class PreferenceService {
 
     public Preference getById(long id) {
         String sql = "SELECT preference_id, student_id, assignment_order, start_type, break_length, break_frequency "
-                + "FROM preference " + "WHERE preference_id = ?;";
+                + "FROM preference WHERE preference_id = ?;";
         RowMapper<Preference> rowMapper = new PreferenceRowMapper();
         Preference preference = jdbcTemplate.queryForObject(sql, rowMapper, id);
         return preference;
@@ -31,7 +31,7 @@ public class PreferenceService {
 
     public Preference getByStudentId(long id) {
         String sql = "SELECT preference_id, student_id, assignment_order, start_type, break_length, break_frequency "
-                + "FROM preference " + "WHERE student_id = ?;";
+                + "FROM preference WHERE student_id = ?;";
         RowMapper<Preference> rowMapper = new PreferenceRowMapper();
         Preference preference = jdbcTemplate.queryForObject(sql, rowMapper, id);
         return preference;
@@ -75,7 +75,7 @@ public class PreferenceService {
     }
 
     public void deletePreference(Preference preference) {
-        String sql = "DELETE FROM preference " + "WHERE preference_id = ?;";
+        String sql = "DELETE FROM preference WHERE preference_id = ?;";
         jdbcTemplate.update(new PreparedStatementCreator() {
             public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
                 PreparedStatement ps = connection.prepareStatement(sql);

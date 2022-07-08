@@ -36,7 +36,7 @@ public class TeacherService {
 	}
 
 	public void updateTeacher(Teacher teacher) {
-		String sql = "UPDATE teacher SET canonical_id = ?, first_name = ?, last_name = ?, phone = ?, department = ? WHERE teacher_id = ?";
+		String sql = "UPDATE teacher SET canonical_id = ?, first_name = ?, last_name = ?, phone = ?, department = ? WHERE teacher_id = ?;";
 		jdbcTemplate.update(new PreparedStatementCreator() {
 			public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
 				PreparedStatement ps = connection.prepareStatement(sql);

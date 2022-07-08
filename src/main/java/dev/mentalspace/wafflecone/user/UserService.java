@@ -93,7 +93,7 @@ public class UserService {
 	}
 
 	public void updateUser(User user) {
-		String sql = "UPDATE user SET username = ?, email = ?, password = ? WHERE user_id = ?";
+		String sql = "UPDATE user SET username = ?, email = ?, password = ? WHERE user_id = ?;";
 		jdbcTemplate.update(new PreparedStatementCreator() {
 			public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
 				PreparedStatement ps = connection.prepareStatement(sql);
@@ -107,7 +107,7 @@ public class UserService {
 	}
 
 	public void deleteUser(User user) {
-		String sql = "DELETE FROM user WHERE user_id = ?";
+		String sql = "DELETE FROM user WHERE user_id = ?;";
 		jdbcTemplate.update(new PreparedStatementCreator() {
 			public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
 				PreparedStatement ps = connection.prepareStatement(sql);
@@ -119,7 +119,7 @@ public class UserService {
 
 	// Link user to a student_id
 	public void updateStudent(User user, Student student) {
-		String sql = "UPDATE user SET student_id = ? WHERE user_id = ?";
+		String sql = "UPDATE user SET student_id = ? WHERE user_id = ?;";
 		jdbcTemplate.update(new PreparedStatementCreator() {
 			public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
 				PreparedStatement ps = connection.prepareStatement(sql);
@@ -132,7 +132,7 @@ public class UserService {
 
 	// Link user to a teacher_id
 	public void updateTeacher(User user, Teacher teacher) {
-		String sql = "UPDATE user SET teacher_id = ? WHERE user_id = ?";
+		String sql = "UPDATE user SET teacher_id = ? WHERE user_id = ?;";
 		jdbcTemplate.update(new PreparedStatementCreator() {
 			public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
 				PreparedStatement ps = connection.prepareStatement(sql);

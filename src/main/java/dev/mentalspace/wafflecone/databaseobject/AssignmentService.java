@@ -23,7 +23,7 @@ public class AssignmentService {
 
     public Assignment getById(long id) {
         String sql = "SELECT assignment_id, period_id, date_assigned, date_due, type, estimated_burden, name, description "
-                + "FROM assignment " + "WHERE assignment_id = ?;";
+                + "FROM assignment WHERE assignment_id = ?;";
         RowMapper<Assignment> rowMapper = new AssignmentRowMapper();
         Assignment assignment = jdbcTemplate.queryForObject(sql, rowMapper, id);
         return assignment;
@@ -31,7 +31,7 @@ public class AssignmentService {
 
     public List<Assignment> getByPeriodId(long id) {
         String sql = "SELECT assignment_id, period_id, date_assigned, date_due, type, estimated_burden, name, description "
-                + "FROM assignment " + "WHERE period_id = ?;";
+                + "FROM assignment WHERE period_id = ?;";
         RowMapper<Assignment> rowMapper = new AssignmentRowMapper();
         List<Assignment> assignments = jdbcTemplate.query(sql, rowMapper, id);
         return assignments;
@@ -79,7 +79,7 @@ public class AssignmentService {
     }
 
     public void deleteAssignment(Assignment assignment) {
-        String sql = "DELETE FROM assignment " + "WHERE assignment_id = ?;";
+        String sql = "DELETE FROM assignment WHERE assignment_id = ?;";
         jdbcTemplate.update(new PreparedStatementCreator() {
             public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
                 PreparedStatement ps = connection.prepareStatement(sql);

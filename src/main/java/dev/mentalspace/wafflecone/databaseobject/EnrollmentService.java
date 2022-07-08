@@ -22,7 +22,7 @@ public class EnrollmentService {
     private JdbcTemplate jdbcTemplate;
 
     public Enrollment getById(long id) {
-        String sql = "SELECT enrollment_id, student_id, period_id, student_preference " + "FROM enrollment "
+        String sql = "SELECT enrollment_id, student_id, period_id, student_preference FROM enrollment "
                 + "WHERE enrollment_id = ?;";
         RowMapper<Enrollment> rowMapper = new EnrollmentRowMapper();
         Enrollment enrollment = jdbcTemplate.queryForObject(sql, rowMapper, id);
@@ -36,7 +36,7 @@ public class EnrollmentService {
     }
 
     public void addEnrollment(Enrollment enrollment) {
-        String sql = "INSERT INTO enrollment (student_id, period_id, student_preference) VALUES " + "(?, ?, ?);";
+        String sql = "INSERT INTO enrollment (student_id, period_id, student_preference) VALUES (?, ?, ?);";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(new PreparedStatementCreator() {
             public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
@@ -52,7 +52,7 @@ public class EnrollmentService {
     }
 
     public void updateEnrollment(Enrollment enrollment) {
-        String sql = "UPDATE enrollment SET " + "student_id = ?, period_id = ?, student_preference = ? "
+        String sql = "UPDATE enrollment SET student_id = ?, period_id = ?, student_preference = ? "
                 + "WHERE enrollment_id = ?;";
         jdbcTemplate.update(new PreparedStatementCreator() {
             public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
@@ -67,7 +67,7 @@ public class EnrollmentService {
     }
 
     public void deleteEnrollment(Enrollment enrollment) {
-        String sql = "DELETE FROM enrollment " + "WHERE enrollment_id = ?;";
+        String sql = "DELETE FROM enrollment WHERE enrollment_id = ?;";
         jdbcTemplate.update(new PreparedStatementCreator() {
             public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
                 PreparedStatement ps = connection.prepareStatement(sql);
