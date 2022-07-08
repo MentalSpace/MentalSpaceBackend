@@ -87,12 +87,9 @@ public class PeriodService {
             "SELECT period_id, teacher_id, subject_id, period, class_code, archived " + 
             "FROM period JOIN enrollment " + 
             "ON period.period_id = enrollment.period_id " + 
-            "WHERE student_id = ? AND archived = ";
-        if(archived){
-            sql += "true;";
-        } else {
-            sql += "false;";
-        }
+            "WHERE student_id = ?"
+	    + (archived ? "" : " AND archived = false")
+	    + ";";
         RowMapper<Period> rowMapper = new PeriodRowMapper();
         List<Period> period = jdbcTemplate.query(sql, rowMapper, id);
         return period;
