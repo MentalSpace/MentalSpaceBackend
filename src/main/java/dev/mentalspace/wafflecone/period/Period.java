@@ -9,9 +9,13 @@ public class Period {
     public boolean archived;
 
     boolean regenerateClassCode;
+    boolean archivedOnly;
     
     public void setRegenerateClassCode(boolean regenerateClassCode) {
         this.regenerateClassCode = regenerateClassCode;
+    }
+    public void setArchivedOnly(boolean archivedOnly) {
+        this.archivedOnly = archivedOnly;
     }
 
     public Period() {

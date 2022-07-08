@@ -35,12 +35,9 @@ public class PeriodService {
         String sql = 
             "SELECT period_id, teacher_id, subject_id, period, class_code, archived " + 
             "FROM period " + 
-            "WHERE period_id = ? AND archived = ";
-        if(archived){
-            sql += "true;";
-        } else {
-            sql += "false;";
-        }
+            "WHERE period_id = ?"
+            + (archived ? "" : " AND archived = false")
+	        + ";";
         RowMapper<Period> rowMapper = new PeriodRowMapper();
         Period period = jdbcTemplate.queryForObject(sql, rowMapper, id);
         return period;
@@ -60,12 +57,9 @@ public class PeriodService {
         String sql = 
             "SELECT period_id, teacher_id, subject_id, period, class_code, archived " + 
             "FROM period " + 
-            "WHERE teacher_id = ? AND archived = ";
-        if(archived){
-            sql += "true;";
-        } else {
-            sql += "false;";
-        }
+            "WHERE teacher_id = ?"
+            + (archived ? "" : " AND archived = false")
+	        + ";";
         RowMapper<Period> rowMapper = new PeriodRowMapper();
         List<Period> period = jdbcTemplate.query(sql, rowMapper, id);
         return period;
@@ -88,8 +82,8 @@ public class PeriodService {
             "FROM period JOIN enrollment " + 
             "ON period.period_id = enrollment.period_id " + 
             "WHERE student_id = ?"
-	    + (archived ? "" : " AND archived = false")
-	    + ";";
+            + (archived ? "" : " AND archived = false")
+            + ";";
         RowMapper<Period> rowMapper = new PeriodRowMapper();
         List<Period> period = jdbcTemplate.query(sql, rowMapper, id);
         return period;
@@ -109,12 +103,9 @@ public class PeriodService {
         String sql = 
             "SELECT period_id, teacher_id, subject_id, period, class_code, archived " + 
             "FROM period " + 
-            "WHERE subject_id = ? AND archived = ";
-        if(archived){
-            sql += "true;";
-        } else {
-            sql += "false;";
-        }
+            "WHERE subject_id = ?"
+            + (archived ? "" : " AND archived = false")
+	        + ";";
         RowMapper<Period> rowMapper = new PeriodRowMapper();
         Period period = jdbcTemplate.queryForObject(sql, rowMapper, id);
         return period;
