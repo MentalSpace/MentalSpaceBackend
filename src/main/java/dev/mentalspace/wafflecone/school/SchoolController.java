@@ -43,9 +43,9 @@ public class SchoolController {
     @Autowired
     UserService userService;
 
-    @GetMapping(path = "", consumes = { MediaType.APPLICATION_JSON_VALUE })
+    @GetMapping(path = "")
     public ResponseEntity<String> getSchool(
-            @RequestParam(value = "shcoolId", defaultValue = "-1") Long searchSchoolId) {
+            @RequestParam(value = "schoolId", defaultValue = "-1") Long searchSchoolId) {
 
         if (!schoolService.existsById(searchSchoolId)) {
             JSONObject errors = new JSONObject().put("schoolId", ErrorString.INVALID_ID);
@@ -57,7 +57,7 @@ public class SchoolController {
         return ResponseEntity.status(HttpStatus.OK).body(response.toString());
     }
 
-    @GetMapping(path = "/all", consumes = { MediaType.APPLICATION_JSON_VALUE })
+    @GetMapping(path = "/all")
     public ResponseEntity<String> getAllSchool() {
         List<School> schools = schoolService.allSchool();
         Response response = new Response("success").put("school", schools);
