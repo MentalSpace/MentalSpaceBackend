@@ -43,7 +43,8 @@ public class TodoController {
     WorkService workService;
     
     @GetMapping(path = "", consumes = { MediaType.APPLICATION_JSON_VALUE })
-	public ResponseEntity<String> getTodo(@RequestHeader("Authorization") String authApiKey, 
+	public ResponseEntity<String> getTodo(
+		@RequestHeader("Authorization") String authApiKey, 
             @RequestParam(value = "todoId", defaultValue = "-1") Long searchTodoId) {
 		AuthToken authToken = authTokenService.verifyBearerKey(authApiKey);
 		if (!authToken.valid) {
@@ -58,25 +59,26 @@ public class TodoController {
         }
 
         Todo todo = todoService.getById(searchTodoId);
-        Response response = new Response("success").put("todo", todo.toJsonObject());
 
         if (loggedInUser.type != UserType.STUDENT || loggedInUser.studentId != workService.getById(todo.workId).studentId) {
             JSONObject errors = new JSONObject().put("studentId", ErrorString.INVALID_ID);
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(errors).toString());
         }
-
+	
+	Response response = new Response("success").put("todo", todo.toJsonObject());
         return ResponseEntity.status(HttpStatus.OK).body(response.toString());
     }
 
     @PostMapping(path = "", consumes = { MediaType.APPLICATION_JSON_VALUE })
-    public ResponseEntity<String> addTodo(@RequestHeader("Authorization") String authApiKey, 
+    public ResponseEntity<String> addTodo(
+    	@RequestHeader("Authorization") String authApiKey, 
         @RequestBody Todo todo) {
         AuthToken authToken = authTokenService.verifyBearerKey(authApiKey);
-		if (!authToken.valid) {
-			JSONObject errors = new JSONObject().put("accessToken", ErrorString.INVALID_ACCESS_TOKEN);
-			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse(errors).toString());
-		}
-		User loggedInUser = userService.getById(authToken.userId);
+	if (!authToken.valid) {
+		JSONObject errors = new JSONObject().put("accessToken", ErrorString.INVALID_ACCESS_TOKEN);
+		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse(errors).toString());
+	}
+	User loggedInUser = userService.getById(authToken.userId);
 
         if (!workService.existsById(todo.workId)) {
             JSONObject errors = new JSONObject().put("workId", ErrorString.INVALID_ID);
@@ -103,7 +105,8 @@ public class TodoController {
     }
 
     @PatchMapping(path = "", consumes = { MediaType.APPLICATION_JSON_VALUE })
-    public ResponseEntity<String> patchTodo(@RequestHeader("Authorization") String authApiKey, 
+    public ResponseEntity<String> patchTodo(
+    	@RequestHeader("Authorization") String authApiKey, 
         @RequestBody Todo todo) {
         AuthToken authToken = authTokenService.verifyBearerKey(authApiKey);
         if (!authToken.valid) {
@@ -112,14 +115,13 @@ public class TodoController {
         }
         User loggedInUser = userService.getById(authToken.userId);
 
-        // TODO: separatly check for todo id and work id
         if (!todoService.existsById(todo.todoId)) {
             JSONObject errors = new JSONObject().put("todoId", ErrorString.INVALID_ID);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(errors).toString());
         }
 
-        Todo todotoupdate = todoService.getById(todo.todoId);
-        todo.workId = todotoupdate.workId;
+        Todo todoToUpdate = todoService.getById(todo.todoId);
+        todo.workId = todoToUpdate.workId;
 
         if (loggedInUser.type != UserType.STUDENT) {
             JSONObject errors = new JSONObject().put("type", ErrorString.USER_TYPE);
@@ -131,6 +133,7 @@ public class TodoController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(errors).toString());
         }
 
+	// TODO: migrate into Todo class as updateTodo(); and clearer logic
         if (todo.date == null) {
             todo.date = todotoupdate.date;
         }
@@ -150,7 +153,8 @@ public class TodoController {
     }
 
     @DeleteMapping(path = "", consumes = { MediaType.APPLICATION_JSON_VALUE })
-    public ResponseEntity<String> deleteTodo(@RequestHeader("Authorization") String authApiKey, 
+    public ResponseEntity<String> deleteTodo(
+    	@RequestHeader("Authorization") String authApiKey, 
         @RequestParam(value = "todoId", defaultValue = "-1") Long deleteTodoId) {
         AuthToken authToken = authTokenService.verifyBearerKey(authApiKey);
         if (!authToken.valid) {
@@ -168,15 +172,13 @@ public class TodoController {
             JSONObject errors = new JSONObject().put("todoId", ErrorString.INVALID_ID);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(errors).toString());
         }
-
-        Todo todo = todoService.getById(deleteTodoId);
-
-        if (loggedInUser.studentId != workService.getById(todo.todoId).studentId) {
+	
+        if (loggedInUser.studentId != workService.getById(deleteTodoId).studentId) {
             JSONObject errors = new JSONObject().put("studentId", ErrorString.PERMISSION_ERROR);
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(errors).toString());
         }
 
-        todoService.deleteTodo(todo);
+        todoService.deleteTodoById(deleteTodoId);
 
         return ResponseEntity.status(HttpStatus.OK).body(new Response("success").toString());
     }
