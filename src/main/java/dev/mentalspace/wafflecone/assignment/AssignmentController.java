@@ -32,8 +32,8 @@ import dev.mentalspace.wafflecone.databaseobject.*;
 import dev.mentalspace.wafflecone.period.PeriodService;
 
 @RestController
-@RequestMapping(path = { "/api/v0/assignemt" })
-public class AssignemtController {
+@RequestMapping(path = { "/api/v0/assignment" })
+public class AssignmentController {
     @Autowired
     UserService userService;
     @Autowired
@@ -50,14 +50,15 @@ public class AssignemtController {
     PeriodService periodService;
 
     @GetMapping(path = "", consumes = { MediaType.APPLICATION_JSON_VALUE })
-    public ResponseEntity<String> getTodo(@RequestHeader("Authorization") String authApiKey, 
-    @RequestParam(value = "assignment", defaultValue = "-1") Long searchAssignmentId) {
+    public ResponseEntity<String> getTodo(
+    	@RequestHeader("Authorization") String authApiKey, 
+    	@RequestParam(value = "assignment", defaultValue = "-1") Long searchAssignmentId) {
         AuthToken authToken = authTokenService.verifyBearerKey(authApiKey);
-		if (!authToken.valid) {
-			JSONObject errors = new JSONObject().put("accessToken", ErrorString.INVALID_ACCESS_TOKEN);
-			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse(errors).toString());
-		}
-		User loggedInUser = userService.getById(authToken.userId);
+	if (!authToken.valid) {
+		JSONObject errors = new JSONObject().put("accessToken", ErrorString.INVALID_ACCESS_TOKEN);
+		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse(errors).toString());
+	}
+	User loggedInUser = userService.getById(authToken.userId);
 
         if (!assignmentService.existsById(searchAssignmentId)) {
             JSONObject errors = new JSONObject().put("assignmentId", ErrorString.INVALID_ID);
@@ -73,6 +74,7 @@ public class AssignemtController {
             }
         }
         if (loggedInUser.type == UserType.TEACHER) {
+	    // TODO: refactor into periodService.isTeacher(teacherId, periodId);
             if (periodService.getById(assignment.periodId).teacherId != loggedInUser.teacherId) {
                 JSONObject errors = new JSONObject().put("teacherId", ErrorString.INVALID_ID);
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(errors).toString());
