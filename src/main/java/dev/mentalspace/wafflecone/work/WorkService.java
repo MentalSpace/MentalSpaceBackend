@@ -7,11 +7,13 @@ import java.sql.Statement;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.jdbc.core.*;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -83,6 +85,26 @@ public class WorkService {
             }
         });
     }
+
+    // public int[] batchAddWork(List<Work> works) {
+    //     KeyHolder keyHolder = new GeneratedKeyHolder();
+    //     int[] addCounts = jdbcTemplate.batchUpdate(
+    //         "INSERT INTO work (student_id, assignment_id, remaining_time, priority) VALUES (?, ?, ?, ?);", 
+    //         new BatchPreparedStatementSetter() {
+    //             public void setValues(PreparedStatement ps, int i) throws SQLException {
+    //                 ps.setLong(1, works.get(i).studentId);
+    //                 ps.setLong(2, works.get(i).assignmentId);
+    //                 ps.setLong(3, works.get(i).remainingTime);
+    //                 ps.setInt (4, works.get(i).priority);
+    //             }
+
+    //             public int getBatchSize() {
+    //                 return works.size();
+    //             }
+    //         }
+    //     );
+    //     return addCounts;
+    // }
 
     public void deleteWork(Work work) {
         String sql = "DELETE FROM work WHERE work_id = ?;";

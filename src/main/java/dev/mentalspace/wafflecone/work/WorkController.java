@@ -2,11 +2,11 @@ package dev.mentalspace.wafflecone.work;
 
 import dev.mentalspace.wafflecone.Utils;
 import dev.mentalspace.wafflecone.WaffleConeController;
+import dev.mentalspace.wafflecone.assignment.Assignment;
+import dev.mentalspace.wafflecone.assignment.AssignmentService;
 import dev.mentalspace.wafflecone.auth.AuthToken;
 import dev.mentalspace.wafflecone.auth.AuthScope;
 import dev.mentalspace.wafflecone.auth.AuthTokenService;
-import dev.mentalspace.wafflecone.databaseobject.Assignment;
-import dev.mentalspace.wafflecone.databaseobject.AssignmentService;
 
 import java.util.List;
 
