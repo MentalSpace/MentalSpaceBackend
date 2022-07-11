@@ -6,7 +6,6 @@ import dev.mentalspace.wafflecone.auth.AuthToken;
 import dev.mentalspace.wafflecone.auth.AuthScope;
 import dev.mentalspace.wafflecone.auth.AuthTokenService;
 
-import org.checkerframework.checker.units.qual.A;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -31,7 +30,7 @@ import dev.mentalspace.wafflecone.work.*;
 import dev.mentalspace.wafflecone.event.*;
 
 @RestController
-@RequestMapping(path = { "/api/v0/todo" })
+@RequestMapping(path = { "/api/v0/event" })
 public class EventController {
     @Autowired
     UserService userService;
@@ -152,7 +151,7 @@ public class EventController {
             return ResponseEntity.status(HttpStatus.OK).body(new Response("success").toString());
         }
 
-    @DeleteMapping
+    @DeleteMapping(path = {""})
     public ResponseEntity<String> deleteEvent(
         @RequestHeader("Authorization") String authApiKey, 
         @RequestParam(value = "eventId", defaultValue = "-1") Long deleteEventId) {
