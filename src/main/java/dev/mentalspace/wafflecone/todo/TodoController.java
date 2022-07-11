@@ -135,16 +135,16 @@ public class TodoController {
 
 	// TODO: migrate into Todo class as updateTodo(); and clearer logic
         if (todo.date == null) {
-            todo.date = todotoupdate.date;
+            todo.date = todoToUpdate.date;
         }
         if (todo.plannedTime == null) {
-            todo.plannedTime = todotoupdate.plannedTime;
+            todo.plannedTime = todoToUpdate.plannedTime;
         }
         if (todo.projectedStartTime == null) {
-            todo.projectedStartTime = todotoupdate.projectedStartTime;
+            todo.projectedStartTime = todoToUpdate.projectedStartTime;
         }
         if (todo.priority == null) {
-            todo.priority = todotoupdate.priority;
+            todo.priority = todoToUpdate.priority;
         }
 
         todoService.updateTodo(todo);
