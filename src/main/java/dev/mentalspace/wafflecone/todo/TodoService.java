@@ -102,14 +102,18 @@ public class TodoService {
         });
     }
 
-    public void deleteTodo(Todo todo) {
+    public void deleteTodoById(long todoId) {
         String sql = "DELETE FROM todo WHERE todo_id = ?;";
         jdbcTemplate.update(new PreparedStatementCreator() {
             public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
                 PreparedStatement ps = connection.prepareStatement(sql);
-                ps.setLong(1, todo.todoId);
+                ps.setLong(1, todoId);
                 return ps;
             }
         });
     }
+    
+    public void deleteTodo(Todo todo) {
+    	deleteTodoById(todo.todoId);
+	}
 }
