@@ -5,8 +5,6 @@ import dev.mentalspace.wafflecone.WaffleConeController;
 import dev.mentalspace.wafflecone.auth.AuthToken;
 import dev.mentalspace.wafflecone.auth.AuthScope;
 import dev.mentalspace.wafflecone.auth.AuthTokenService;
-import dev.mentalspace.wafflecone.auth.RefreshToken;
-import dev.mentalspace.wafflecone.auth.RefreshTokenService;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,8 +36,6 @@ public class TodoController {
     @Autowired
 	UserService userService;
 	@Autowired
-	RefreshTokenService refreshTokenService;
-	@Autowired
 	AuthTokenService authTokenService;
     @Autowired
     TodoService todoService;
@@ -62,7 +58,7 @@ public class TodoController {
         }
 
         Todo todo = todoService.getById(searchTodoId);
-        Response response = new Response("success").put("work", todo.toJsonObject());
+        Response response = new Response("success").put("todo", todo.toJsonObject());
 
         if (loggedInUser.type != UserType.STUDENT || loggedInUser.studentId != workService.getById(todo.workId).studentId) {
             JSONObject errors = new JSONObject().put("studentId", ErrorString.INVALID_ID);
@@ -154,7 +150,7 @@ public class TodoController {
     }
 
     @DeleteMapping(path = "", consumes = { MediaType.APPLICATION_JSON_VALUE })
-    public ResponseEntity<String> patchTodo(@RequestHeader("Authorization") String authApiKey, 
+    public ResponseEntity<String> deleteTodo(@RequestHeader("Authorization") String authApiKey, 
         @RequestParam(value = "todoId", defaultValue = "-1") Long deleteTodoId) {
         AuthToken authToken = authTokenService.verifyBearerKey(authApiKey);
         if (!authToken.valid) {
@@ -175,7 +171,7 @@ public class TodoController {
 
         Todo todo = todoService.getById(deleteTodoId);
 
-        if (loggedInUser.studentId != workService.getById(todo).studentId) {
+        if (loggedInUser.studentId != workService.getById(todo.todoId).studentId) {
             JSONObject errors = new JSONObject().put("studentId", ErrorString.PERMISSION_ERROR);
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(errors).toString());
         }
