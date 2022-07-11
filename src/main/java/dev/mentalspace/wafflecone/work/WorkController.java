@@ -55,9 +55,10 @@ public class WorkController {
     @Autowired
     StudentService studentService;
 
-    @GetMapping(path = "", consumes = { MediaType.APPLICATION_JSON_VALUE })
-	public ResponseEntity<String> getWork(@RequestHeader("Authorization") String authApiKey, 
-            @RequestParam(value = "workId", defaultValue = "-1") Long searchWorkId) {
+    @GetMapping(path = { "" })
+	public ResponseEntity<String> getWork(
+	    @RequestHeader("Authorization") String authApiKey, 
+	    @RequestParam(value = "workId", defaultValue = "-1") Long searchWorkId) {
 		AuthToken authToken = authTokenService.verifyBearerKey(authApiKey);
 		if (!authToken.valid) {
 			JSONObject errors = new JSONObject().put("accessToken", ErrorString.INVALID_ACCESS_TOKEN);
@@ -65,31 +66,32 @@ public class WorkController {
 		}
 		User loggedInUser = userService.getById(authToken.userId);
 
-        if (loggedInUser.type != UserType.STUDENT) {
-            JSONObject errors = new JSONObject().put("userType", ErrorString.USER_TYPE);
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(errors).toString());
-        }
+		if (loggedInUser.type != UserType.STUDENT) {
+			JSONObject errors = new JSONObject().put("userType", ErrorString.USER_TYPE);
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(errors).toString());
+		}
 
-        if (!workService.existsById(searchWorkId)) {
-            JSONObject errors = new JSONObject().put("workId", ErrorString.INVALID_ID);
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(errors).toString());
-        }
+		if (!workService.existsById(searchWorkId)) {
+			JSONObject errors = new JSONObject().put("workId", ErrorString.INVALID_ID);
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(errors).toString());
+		}
 
-        Work work = workService.getById(searchWorkId);
+		Work work = workService.getById(searchWorkId);
 
-        if (work.studentId != loggedInUser.studentId) {
-            JSONObject errors = new JSONObject().put("studentId", ErrorString.INVALID_ID);
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(errors).toString());
-        }
+		if (work.studentId != loggedInUser.studentId) {
+			JSONObject errors = new JSONObject().put("studentId", ErrorString.INVALID_ID);
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(errors).toString());
+		}
 
-        Response response = new Response("success").put("work", work.toJsonObject());
+		Response response = new Response("success").put("work", work.toJsonObject());
 
-        return ResponseEntity.status(HttpStatus.OK).body(response.toString());
+		return ResponseEntity.status(HttpStatus.OK).body(response.toString());
     }
 
-    @GetMapping(path = "/todos", consumes = { MediaType.APPLICATION_JSON_VALUE })
-	public ResponseEntity<String> getTodosByWorkId(@RequestHeader("Authorization") String authApiKey, 
-            @RequestParam(value = "workId", defaultValue = "-1") Long searchWorkId) {
+    @GetMapping(path = { "/todos" })
+	public ResponseEntity<String> getTodosByWorkId(
+	@RequestHeader("Authorization") String authApiKey, 
+        @RequestParam(value = "workId", defaultValue = "-1") Long searchWorkId) {
         AuthToken authToken = authTokenService.verifyBearerKey(authApiKey);
         if (!authToken.valid) {
             JSONObject errors = new JSONObject().put("accessToken", ErrorString.INVALID_ACCESS_TOKEN);
@@ -144,9 +146,10 @@ public class WorkController {
     //     if 
     // }
 
-    @PatchMapping(path = "", consumes = { MediaType.APPLICATION_JSON_VALUE })
-    public ResponseEntity<String> patchWork(@RequestHeader("Authorization") String authApiKey, 
-    @RequestBody Work work) {
+    @PatchMapping(path = { "" }, consumes = { MediaType.APPLICATION_JSON_VALUE })
+    public ResponseEntity<String> patchWork(
+    	@RequestHeader("Authorization") String authApiKey, 
+    	@RequestBody Work work) {
         AuthToken authToken = authTokenService.verifyBearerKey(authApiKey);
         if (!authToken.valid) {
         JSONObject errors = new JSONObject().put("accessToken", ErrorString.INVALID_ACCESS_TOKEN);
@@ -171,6 +174,7 @@ public class WorkController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(errors).toString());
         }
 
+		// TODO: refactor into Work as updateWork();
         work.assignmentId = dbWork.assignmentId;
         work.studentId = dbWork.studentId;
 
@@ -186,9 +190,10 @@ public class WorkController {
         return ResponseEntity.status(HttpStatus.OK).body(new Response("success").toString());
     }
 
-    @DeleteMapping
-    public ResponseEntity<String> deleteWork(@RequestHeader("Authorization") String authApiKey, 
-    @RequestParam(value = "workId", defaultValue = "-1") Long deleteWorkId) {
+    @DeleteMapping(path = { "" })
+    public ResponseEntity<String> deleteWork(
+    	@RequestHeader("Authorization") String authApiKey, 
+    	@RequestParam(value = "workId", defaultValue = "-1") Long deleteWorkId) {
         AuthToken authToken = authTokenService.verifyBearerKey(authApiKey);
         if (!authToken.valid) {
             JSONObject errors = new JSONObject().put("accessToken", ErrorString.INVALID_ACCESS_TOKEN);
