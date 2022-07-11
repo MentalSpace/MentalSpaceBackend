@@ -54,11 +54,11 @@ public class AssignmentController {
     	@RequestHeader("Authorization") String authApiKey, 
     	@RequestParam(value = "assignment", defaultValue = "-1") Long searchAssignmentId) {
         AuthToken authToken = authTokenService.verifyBearerKey(authApiKey);
-	if (!authToken.valid) {
-		JSONObject errors = new JSONObject().put("accessToken", ErrorString.INVALID_ACCESS_TOKEN);
-		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse(errors).toString());
-	}
-	User loggedInUser = userService.getById(authToken.userId);
+		if (!authToken.valid) {
+			JSONObject errors = new JSONObject().put("accessToken", ErrorString.INVALID_ACCESS_TOKEN);
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse(errors).toString());
+		}
+		User loggedInUser = userService.getById(authToken.userId);
 
         if (!assignmentService.existsById(searchAssignmentId)) {
             JSONObject errors = new JSONObject().put("assignmentId", ErrorString.INVALID_ID);
