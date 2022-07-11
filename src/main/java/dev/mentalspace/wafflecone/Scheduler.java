@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import dev.mentalspace.wafflecone.databaseobject.Event;
 import dev.mentalspace.wafflecone.databaseobject.Preference;
-import dev.mentalspace.wafflecone.databaseobject.Todo;
+import dev.mentalspace.wafflecone.todo.Todo;
 
 public class Scheduler {
     /**
