@@ -1,4 +1,4 @@
-package dev.mentalspace.wafflecone.databaseobject;
+package dev.mentalspace.wafflecone.event;
 
 import java.util.TimeZone;
 import org.json.JSONObject;
