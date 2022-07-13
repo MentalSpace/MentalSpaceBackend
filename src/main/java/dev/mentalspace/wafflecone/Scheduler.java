@@ -2,11 +2,8 @@ package dev.mentalspace.wafflecone;
 
 import java.util.ArrayList;
 
-import org.dmfs.rfc5545.recur.InvalidRecurrenceRuleException;
-import org.dmfs.rfc5545.recur.RecurrenceRule;
-
-import dev.mentalspace.wafflecone.event.Event;
 import dev.mentalspace.wafflecone.databaseobject.Preference;
+import dev.mentalspace.wafflecone.event.Event;
 import dev.mentalspace.wafflecone.todo.Todo;
 
 public class Scheduler {
@@ -319,37 +316,4 @@ public class Scheduler {
         }
         return setTodos;
     }  
-
-        public static void main(String[] args) throws InvalidRecurrenceRuleException {
-        Event[] events = {new Event(), new Event(), new Event()};
-        events[0].duration = 12180000L;
-        events[1].duration = 20700000L;
-        events[2].duration = 13680000L;
-        events[0].rrule = new RecurrenceRule("FREQ=DAILY;COUNT=30;INTERVAL=1;WKST=MO;BYHOUR=0;BYMINUTE=30");
-        events[1].rrule = new RecurrenceRule("FREQ=DAILY;COUNT=30;INTERVAL=1;WKST=MO;BYHOUR=5;BYMINUTE=15");
-        events[2].rrule = new RecurrenceRule("FREQ=DAILY;COUNT=30;INTERVAL=1;WKST=MO;BYHOUR=13;BYMINUTE=05");
-
-        Todo[] todos = {new Todo(), new Todo(), new Todo(), new Todo()};
-        todos[0].plannedTime = 2100000L;
-        todos[1].plannedTime = 3600000L;
-        todos[2].plannedTime = 7200000L;
-        todos[3].plannedTime = 3240000L;
-
-        Preference pref = new Preference();
-        pref.breakFrequency = 12180000L;
-        pref.breakLength = 0L;
-        ArrayList<Todo> set = scheduleASAP(pref, todos, events, 1657584000000L, 1657670400000L);
-
-        long[] start = getEventStart(events, 1657584000000L);
-        long[] end = getEventEnd(events, 1657584000000L);
-
-        for(int k = 0; k < events.length; k++) {
-            System.out.println("k: " + k + ", Start: " + start[k] + ", End: " + end[k]);
-        }
-
-        for(int i = 0; i < set.size(); i++) {
-            System.out.println("i: " + i + ", Start: " + set.get(i).projectedStartTime + ", End: " + (set.get(i).projectedStartTime+set.get(i).plannedTime));
-        }
-    }
-    
 }
