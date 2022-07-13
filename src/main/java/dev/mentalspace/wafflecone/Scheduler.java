@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import org.dmfs.rfc5545.recur.InvalidRecurrenceRuleException;
 import org.dmfs.rfc5545.recur.RecurrenceRule;
 
-import dev.mentalspace.wafflecone.databaseobject.Event;
+import dev.mentalspace.wafflecone.event.Event;
 import dev.mentalspace.wafflecone.databaseobject.Preference;
 import dev.mentalspace.wafflecone.todo.Todo;
 
