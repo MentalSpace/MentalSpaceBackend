@@ -1,4 +1,4 @@
-package dev.mentalspace.wafflecone.databaseobject;
+package dev.mentalspace.wafflecone.event;
 
 import java.util.TimeZone;
 import org.json.JSONObject;
@@ -43,7 +43,7 @@ public class Event {
             .put("studentId",     this.studentId)
             .put("name",          this.name)
             .put("description",   this.description)
-            .put("rruleString",   this.rruleString)
+            .put("rruleString",   "RRULE" + this.rruleString)
             .put("duration",      this.duration);
         return jsonObject;
     }
@@ -54,7 +54,7 @@ public class Event {
             .put("studentId",     this.studentId)
             .put("name",          this.name)
             .put("description",   this.description)
-            .put("rruleString",   this.rruleString)
+            .put("rruleString",   "RRULE" + this.rruleString)
             .put("duration",      this.duration);
         return jsonObject;
     }
