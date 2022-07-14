@@ -5,7 +5,7 @@ import org.json.JSONObject;
 public class Preference {
     public Long preferenceId;
     public Long studentId;
-    public Integer assignmentOrder;
+    public AssignmentOrder assignmentOrder;
     public StartType startType;
     public Long breakLength;
     public Long breakFrequency;

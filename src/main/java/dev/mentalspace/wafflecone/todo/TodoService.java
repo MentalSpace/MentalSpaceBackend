@@ -1,5 +1,4 @@
 package dev.mentalspace.wafflecone.todo;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -14,6 +13,9 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+
+import dev.mentalspace.wafflecone.databaseobject.AssignmentOrder;
+import dev.mentalspace.wafflecone.databaseobject.Preference;
 
 @Transactional
 @Repository
@@ -43,15 +45,15 @@ public class TodoService {
 
     public List<Todo> getByWorkId(long id) {
         String sql = "SELECT todo_id, work_id, date, planned_time, projected_start_time, priority FROM todo "
-                + "WHERE woek_id = ?;";
+                + "WHERE work_id = ?;";
         RowMapper<Todo> rowMapper = new TodoRowMapper();
         List<Todo> todos = jdbcTemplate.query(sql, rowMapper, id);
         return todos;
     }
 
     public List<Todo> getByStudentId(long id) {
-        String sql = "SELECT todo_id, work_id, date, planned_time, projected_start_time, priority "
-                + "FROM todo JOIN work ON todo.work_id = work.work_id WHERE student_id = ?;";
+        String sql = "SELECT todo.todo_id, todo.work_id, todo.date, todo.planned_time, todo.projected_start_time, todo.priority "
+                + "FROM todo JOIN work ON todo.work_id = work.work_id WHERE student_id = ? ORDER BY priority;";
         RowMapper<Todo> rowMapper = new TodoRowMapper();
         List<Todo> todos = jdbcTemplate.query(sql, rowMapper, id);
         return todos;
@@ -60,7 +62,7 @@ public class TodoService {
     // Ensure whatever uses this function has default values; THIS IS NULL-UNSAFE CODE
     // TODO: REFACTOR THIS SO IT'S NULL-SAFE JUST IN CASE:tm:
     public List<Todo> getByStudentId(long id, long start, long end) {
-        String sql = "SELECT todo_id, work_id, date, planned_time, projected_start_time, priority "
+        String sql = "SELECT todo.todo_id, todo.work_id, todo.date, todo.planned_time, todo.projected_start_time, todo.priority "
                 + "FROM todo JOIN work ON todo.work_id = work.work_id WHERE student_id = ?" 
                 + (start <= 0 ? "" : " AND date >= " + String.valueOf(start))
                 + (end <= 0 ? "" : " AND date <= " + String.valueOf(end)) + ";";
@@ -70,7 +72,7 @@ public class TodoService {
     }
 
     public List<Todo> getByWorkIdAndStudentId(long work, long student) {
-        String sql = "SELECT todo_id, work_id, date, planned_time, projected_start_time, priority "
+        String sql = "SELECT todo.todo_id, todo.work_id, todo.date, todo.planned_time, todo.projected_start_time, todo.priority "
                 + "FROM todo JOIN work ON todo.work_id = work.work_id WHERE work_id = ? AND student_id = ?;";
         RowMapper<Todo> rowMapper = new TodoRowMapper();
         List<Todo> todos = jdbcTemplate.query(sql, rowMapper, work, student);
@@ -128,4 +130,31 @@ public class TodoService {
     public void deleteTodo(Todo todo) {
     	deleteTodoById(todo.todoId);
 	}
+
+    public void assignPriority(long id, Preference preference) {
+        RowMapper<Todo> rowMapper = new TodoRowMapper();
+        int i = 0;
+        String sql = new String();
+        List<Todo> todos = getByStudentId(id);
+
+        if(preference.assignmentOrder == AssignmentOrder.SHORT_JOB_FIRST) {
+            sql = "SELECT todo.todo_id, todo.work_id, todo.date, todo.planned_time, todo.projected_start_time, todo.priority "
+                + "FROM todo JOIN work ON todo.work_id = work.work_id WHERE student_id = ? ORDER BY todo.planned_time;";
+        }
+        else if (preference.assignmentOrder == AssignmentOrder.LONG_JOB_FIRST) {
+            sql = "SELECT todo.todo_id, todo.work_id, todo.date, todo.planned_time, todo.projected_start_time, todo.priority "
+            + "FROM todo JOIN work ON todo.work_id = work.work_id WHERE student_id = ? ORDER BY todo.planned_time DESC;";
+        }
+        else if(preference.assignmentOrder == AssignmentOrder.IN_SUBJECTS_ORDER) {
+            sql = "SELECT todo.todo_id, todo.work_id, todo.date, todo.planned_time, todo.projected_start_time, todo.priority "
+                + "FROM todo JOIN work ON todo.work_id = work.work_id WHERE student_id = ? ORDER BY work.priority;";
+        }
+
+        todos = jdbcTemplate.query(sql, rowMapper, id);
+
+        for(Todo todo: todos) {
+            todo.priority = i;
+            i++;
+        }
+    }
 }

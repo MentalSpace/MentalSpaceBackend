@@ -205,6 +205,7 @@ public class TodoController {
 
         Preference preference = preferenceService.getByStudentId(loggedInUser.studentId);
         List<Event> events = eventService.getByStudentId(loggedInUser.studentId);
+        todoService.assignPriority(loggedInUser.studentId, preference);
         List<Todo> todos = todoService.getByStudentId(loggedInUser.studentId);
 
         Event[] eventsArray = new Event[events.size()];

@@ -45,7 +45,7 @@ public class PreferenceService {
             public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
                 PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
                 ps.setLong(1, preference.studentId);
-                ps.setInt(2, preference.assignmentOrder);
+                ps.setInt(2, preference.assignmentOrder.ordinal());
                 ps.setInt(3, preference.startType.ordinal());
                 ps.setLong(4, preference.breakLength);
                 ps.setLong(5, preference.breakFrequency);
@@ -64,7 +64,7 @@ public class PreferenceService {
             public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
                 PreparedStatement ps = connection.prepareStatement(sql);
                 ps.setLong(1, preference.studentId);
-                ps.setInt(2, preference.assignmentOrder);
+                ps.setInt(2, preference.assignmentOrder.ordinal());
                 ps.setInt(3, preference.startType.ordinal());
                 ps.setLong(4, preference.breakLength);
                 ps.setLong(5, preference.breakFrequency);
