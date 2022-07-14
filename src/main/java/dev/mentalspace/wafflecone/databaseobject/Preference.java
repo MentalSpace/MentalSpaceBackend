@@ -9,6 +9,7 @@ public class Preference {
     public StartType startType;
     public Long breakLength;
     public Long breakFrequency;
+    public boolean keepTogether;
 
     public Long start;
     public Long end;
