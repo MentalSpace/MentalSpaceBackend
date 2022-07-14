@@ -15,6 +15,9 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import dev.mentalspace.wafflecone.teacher.Teacher;
+import dev.mentalspace.wafflecone.user.User;
+
 @Transactional
 @Repository
 public class PeriodService {
@@ -33,6 +36,20 @@ public class PeriodService {
         return count != 0;
     }
 
+    public boolean isTeacher(long teacherId, long periodId) {
+        return getById(periodId).teacherId == teacherId; 
+    }
+
+    // DO NOT USE IF YOU NEED PERIOD OBJECT LATER
+    public boolean isTeacher(Teacher teacher, Period period) {
+        return isTeacher(teacher.teacherId, period.periodId);
+    }
+
+    // VERIFY USERTYPE BEFORE USE
+    public boolean isTeacher(User user, Period period) {
+        return isTeacher(user.teacherId, period.periodId);
+    }
+
     public Period getById(long id) {
         String sql = "SELECT period_id, teacher_id, subject_id, period, class_code, archived FROM period "
                 + "WHERE period_id = ?;";
@@ -49,6 +66,14 @@ public class PeriodService {
         return period;
     }
 
+    public Period getByClassCode(String classCode) {
+        String sql = "SELECT period_id, teacher_id, subject_id, period, class_code, archived FROM period "
+                + "WHERE class_code = ?;";
+        RowMapper<Period> rowMapper = new PeriodRowMapper();
+        Period period = jdbcTemplate.queryForObject(sql, rowMapper, classCode);
+        return period;
+    }
+
     public List<Period> getByTeacherId(long id) {
         String sql = "SELECT period_id, teacher_id, subject_id, period, class_code, archived FROM period "
                 + "WHERE teacher_id = ?;";
@@ -59,7 +84,9 @@ public class PeriodService {
 
     public List<Period> getByTeacherId(long id, boolean archived) {
         String sql = "SELECT period_id, teacher_id, subject_id, period, class_code, archived FROM period "
-                + "WHERE teacher_id = ?" + (archived ? "" : " AND archived = false") + ";";
+                + "WHERE teacher_id = ?"
+                + (archived ? " archived = true" : "")
+                + ";";
         RowMapper<Period> rowMapper = new PeriodRowMapper();
         List<Period> period = jdbcTemplate.query(sql, rowMapper, id);
         return period;

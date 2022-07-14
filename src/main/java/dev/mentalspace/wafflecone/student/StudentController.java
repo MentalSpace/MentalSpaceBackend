@@ -111,8 +111,13 @@ public class StudentController {
 						.body(new Response("success").put("student", student.toJsonObject()).toString());
 			}
 		}
-
+		
 		// TODO: debate whether any account should view any student that they want
+		// only allow non-student to view others
+		if (loggedInUser.type == UserType.STUDENT) {
+			JSONObject errors = new JSONObject().put("user", ErrorString.USER_TYPE);
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse(errors).toString());
+		}
 
 		if (searchStudentId == -1) {
 			if (!studentService.existsByCanonicalId(searchCanonicalId)) {
@@ -152,7 +157,7 @@ public class StudentController {
 			return ResponseEntity.status(HttpStatus.OK).body(new Response("success").toString());
 		}
 
-		// TODO: Implement modify other people's account(s)
+		// TODO: Debate if teachers can modify student accounts
 		return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body("Not Implemented Yet.");
 	}
 
@@ -228,6 +233,8 @@ public class StudentController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(errors).toString());
 		}
 
+
+		//TODO: debate on letting teachers see student preference
 		studentId = loggedInUser.studentId;
 
 		Preference preference = preferenceService.getByStudentId(studentId);
@@ -238,7 +245,7 @@ public class StudentController {
 	@PatchMapping(path = "/preference", consumes = { MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<String> patchPreference(
     	@RequestHeader("Authorization") String authApiKey, 
-        @RequestBody Preference preference) {
+        @RequestBody Preference patchDetails) {
         AuthToken authToken = authTokenService.verifyBearerKey(authApiKey);
         if (!authToken.valid) {
             JSONObject errors = new JSONObject().put("accessToken", ErrorString.INVALID_ACCESS_TOKEN);
@@ -251,22 +258,9 @@ public class StudentController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(errors).toString());
 		}
 
-        Preference dbpreference = preferenceService.getByStudentId(loggedInUser.studentId);
-		preference.preferenceId = dbpreference.preferenceId;
-		preference.studentId = dbpreference.studentId;
-		if (preference.assignmentOrder == null) {
-			preference.assignmentOrder = dbpreference.assignmentOrder;
-		}
-		if (preference.startType == null) {
-			preference.startType = dbpreference.startType;
-		}
-		if (preference.breakLength == null) {
-			preference.breakLength = dbpreference.breakLength;
-		}
-		if (preference.breakFrequency == null) {
-			preference.breakFrequency = dbpreference.breakFrequency;
-		}
-
+        Preference preference = preferenceService.getByStudentId(loggedInUser.studentId);
+		preference.update(patchDetails);
+		
 		preferenceService.updatePreference(preference);
 
         return ResponseEntity.status(HttpStatus.OK).body(new Response("success").toString());
@@ -291,14 +285,15 @@ public class StudentController {
 		studentId = loggedInUser.studentId;
 
 		List<Work> works = workService.getByStudentId(studentId, outstanding);
-		Response response = new Response().put("works", works);
+		Response response = new Response().put("work", works);
 		return ResponseEntity.status(HttpStatus.OK).body(response.toString());
 	}
 
 	@GetMapping(path = "/todos")
-	public ResponseEntity<String> getWorks(@RequestHeader("Authorization") String authApiKey,
-		@RequestParam(value = "endDate", defaultValue = "-1") Long endDate,
+	public ResponseEntity<String> getTodos(
+		@RequestHeader("Authorization") String authApiKey,
 		@RequestParam(value = "startDate", defaultValue = "-1") Long startDate,
+		@RequestParam(value = "endDate", defaultValue = "-1") Long endDate,
 		@RequestParam(value = "studentId", defaultValue = "-1") Long studentId) {
 		AuthToken authToken = authTokenService.verifyBearerKey(authApiKey);
 		if (!authToken.valid) {
@@ -311,9 +306,9 @@ public class StudentController {
 			JSONObject errors = new JSONObject().put("type", ErrorString.USER_TYPE);
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(errors).toString());
 		}
-	
+		
 		List<Todo> todos = todoService.getByStudentId(studentId, startDate, endDate);
-		Response response = new Response().put("works", todos);
+		Response response = new Response().put("todos", todos);
 		return ResponseEntity.status(HttpStatus.OK).body(response.toString());
 	}
 }

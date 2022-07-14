@@ -178,7 +178,23 @@ public class UserController {
 			return ResponseEntity.status(HttpStatus.OK).body(response.toString());
 		}
 
+		// Debate on sane default
+		if (loggedInUser.type == UserType.STUDENT) {
+			JSONObject errors = new JSONObject().put("user", ErrorString.USER_TYPE);
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse(errors).toString());
+		}
+
 		// TODO: Implement searching by IDs
+
+		if (loggedInUser.type == UserType.TEACHER) {
+			if (userService.existsById(searchUserId)) {
+				User user = userService.getById(searchUserId);
+				return ResponseEntity.status(HttpStatus.OK)
+					.body(new Response("success").put("user", user.toJsonObject()).toString());
+			}
+			JSONObject errors = new JSONObject().put("userId", ErrorString.INVALID_ID);
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(errors).toString());
+		}
 		return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body("Not Implemented Yet.");
 	}
 
