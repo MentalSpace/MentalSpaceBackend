@@ -86,7 +86,7 @@ public class TodoController {
     @PostMapping(path = "", consumes = { MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<String> addTodo(
     	@RequestHeader("Authorization") String authApiKey, 
-        @RequestBody Todo todo) {
+        @RequestBody Todo todo, Preference preference) {
         AuthToken authToken = authTokenService.verifyBearerKey(authApiKey);
 	if (!authToken.valid) {
 		JSONObject errors = new JSONObject().put("accessToken", ErrorString.INVALID_ACCESS_TOKEN);
@@ -114,6 +114,7 @@ public class TodoController {
         }
 
         todoService.addTodo(todo);
+        todoService.assignPriority(loggedInUser.studentId, preference);
 
         return ResponseEntity.status(HttpStatus.OK).body(new Response("success").toString());
     }
@@ -205,7 +206,6 @@ public class TodoController {
 
         Preference preference = preferenceService.getByStudentId(loggedInUser.studentId);
         List<Event> events = eventService.getByStudentId(loggedInUser.studentId);
-        todoService.assignPriority(loggedInUser.studentId, preference);
         List<Todo> todos = todoService.getByStudentId(loggedInUser.studentId);
 
         Event[] eventsArray = new Event[events.size()];
