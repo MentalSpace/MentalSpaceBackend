@@ -79,8 +79,7 @@ public class AssignmentController {
             }
         }
         if (loggedInUser.type == UserType.TEACHER) {
-	    // TODO: refactor into periodService.isTeacher(teacherId, periodId); maybe:tm:
-            if (periodService.getById(assignment.periodId).teacherId != loggedInUser.teacherId) {
+            if (periodService.isTeacher(loggedInUser.teacherId, assignment.periodId)) {
                 JSONObject errors = new JSONObject().put("teacherId", ErrorString.INVALID_ID);
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(errors).toString());
             }
@@ -171,8 +170,7 @@ public class AssignmentController {
         Assignment assignment = assignmentService.getById(patchDetails.assignmentId);
 
         if (loggedInUser.type == UserType.TEACHER) {
-            Period period = periodService.getById(assignment.assignmentId);
-            if (period.teacherId != loggedInUser.teacherId) {
+            if (periodService.isTeacher(loggedInUser.teacherId, assignment.periodId)) {
                 JSONObject errors = new JSONObject().put("teacherId", ErrorString.OWNERSHIP);
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(errors).toString());
             }
