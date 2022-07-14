@@ -5,6 +5,7 @@ import dev.mentalspace.wafflecone.WaffleConeController;
 import dev.mentalspace.wafflecone.auth.AuthToken;
 import dev.mentalspace.wafflecone.auth.AuthScope;
 import dev.mentalspace.wafflecone.auth.AuthTokenService;
+import dev.mentalspace.wafflecone.databaseobject.EnrollmentService;
 
 import java.util.List;
 
@@ -31,8 +32,7 @@ import dev.mentalspace.wafflecone.user.*;
 import dev.mentalspace.wafflecone.work.*;
 import dev.mentalspace.wafflecone.todo.*;
 import dev.mentalspace.wafflecone.assignment.*;
-// TODO: when enrollment service moves to /enrollment/* change */
-import dev.mentalspace.wafflecone.databaseobject.*;
+import dev.mentalspace.wafflecone.databaseobject.Enrollment;
 import dev.mentalspace.wafflecone.period.Period;
 import dev.mentalspace.wafflecone.period.PeriodService;
 
