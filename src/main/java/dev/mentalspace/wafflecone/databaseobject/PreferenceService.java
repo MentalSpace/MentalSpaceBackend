@@ -46,7 +46,7 @@ public class PreferenceService {
                 PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
                 ps.setLong(1, preference.studentId);
                 ps.setInt(2, preference.assignmentOrder);
-                ps.setInt(3, preference.startType);
+                ps.setInt(3, preference.startType.ordinal());
                 ps.setLong(4, preference.breakLength);
                 ps.setLong(5, preference.breakFrequency);
                 return ps;
@@ -65,7 +65,7 @@ public class PreferenceService {
                 PreparedStatement ps = connection.prepareStatement(sql);
                 ps.setLong(1, preference.studentId);
                 ps.setInt(2, preference.assignmentOrder);
-                ps.setInt(3, preference.startType);
+                ps.setInt(3, preference.startType.ordinal());
                 ps.setLong(4, preference.breakLength);
                 ps.setLong(5, preference.breakFrequency);
                 ps.setLong(6, preference.preferenceId);

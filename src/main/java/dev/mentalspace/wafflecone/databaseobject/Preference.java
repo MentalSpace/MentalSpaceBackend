@@ -6,9 +6,16 @@ public class Preference {
     public Long preferenceId;
     public Long studentId;
     public Integer assignmentOrder;
-    public Integer startType;
+    public StartType startType;
     public Long breakLength;
     public Long breakFrequency;
+
+    public Long start;
+    public Long end;
+
+    public void setType(String type) {
+        this.startType = StartType.valueOf(type.toUpperCase());
+    }
 
     public Preference() {
     }
