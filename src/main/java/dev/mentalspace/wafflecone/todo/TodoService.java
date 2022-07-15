@@ -45,7 +45,7 @@ public class TodoService {
 
     public List<Todo> getByWorkId(long id) {
         String sql = "SELECT todo_id, work_id, date, planned_time, projected_start_time, priority FROM todo "
-                + "WHERE work_id = ?;";
+                + "WHERE work_id = ? ORDER BY priority;";
         RowMapper<Todo> rowMapper = new TodoRowMapper();
         List<Todo> todos = jdbcTemplate.query(sql, rowMapper, id);
         return todos;
@@ -63,7 +63,7 @@ public class TodoService {
     // TODO: REFACTOR THIS SO IT'S NULL-SAFE JUST IN CASE:tm:
     public List<Todo> getByStudentId(long id, long start, long end) {
         String sql = "SELECT todo.todo_id, todo.work_id, todo.date, todo.planned_time, todo.projected_start_time, todo.priority "
-                + "FROM todo JOIN work ON todo.work_id = work.work_id WHERE student_id = ?" 
+                + "FROM todo JOIN work ON todo.work_id = work.work_id WHERE student_id = ? ORDER BY priority" 
                 + (start <= 0 ? "" : " AND date >= " + String.valueOf(start))
                 + (end <= 0 ? "" : " AND date <= " + String.valueOf(end)) + ";";
         RowMapper<Todo> rowMapper = new TodoRowMapper();
@@ -73,7 +73,7 @@ public class TodoService {
 
     public List<Todo> getByWorkIdAndStudentId(long work, long student) {
         String sql = "SELECT todo.todo_id, todo.work_id, todo.date, todo.planned_time, todo.projected_start_time, todo.priority "
-                + "FROM todo JOIN work ON todo.work_id = work.work_id WHERE work_id = ? AND student_id = ?;";
+                + "FROM todo JOIN work ON todo.work_id = work.work_id WHERE work_id = ? AND student_id = ? ORDER BY priority;";
         RowMapper<Todo> rowMapper = new TodoRowMapper();
         List<Todo> todos = jdbcTemplate.query(sql, rowMapper, work, student);
         return todos;
@@ -154,6 +154,7 @@ public class TodoService {
 
         for(Todo todo: todos) {
             todo.priority = i;
+            updateTodo(todo);
             i++;
         }
     }
