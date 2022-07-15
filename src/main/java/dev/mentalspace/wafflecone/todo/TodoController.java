@@ -216,7 +216,7 @@ public class TodoController {
         if(preference.startType == StartType.AS_LATE_AS_POSSIBLE) {
             Scheduler.scheduleALAP(preference, todoArray, eventsArray, schedulePreference.start, schedulePreference.end);
         }
-        else if (preference.startType == StartType.AS_LATE_AS_POSSIBLE) {
+        else if (preference.startType == StartType.AS_SOON_AS_POSSIBLE) {
             Scheduler.scheduleASAP(preference, todoArray, eventsArray, schedulePreference.start, schedulePreference.end);
         }
 
