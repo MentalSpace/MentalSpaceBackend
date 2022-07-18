@@ -57,7 +57,7 @@ public class AssignmentController {
     @GetMapping(path = "")
     public ResponseEntity<String> getTodo(
     	@RequestHeader("Authorization") String authApiKey, 
-    	@RequestParam(value = "assignment", defaultValue = "-1") Long searchAssignmentId) {
+    	@RequestParam(value = "assignmentId", defaultValue = "-1") Long searchAssignmentId) {
         AuthToken authToken = authTokenService.verifyBearerKey(authApiKey);
 		if (!authToken.valid) {
 			JSONObject errors = new JSONObject().put("accessToken", ErrorString.INVALID_ACCESS_TOKEN);
@@ -67,21 +67,21 @@ public class AssignmentController {
 
         if (!assignmentService.existsById(searchAssignmentId)) {
             JSONObject errors = new JSONObject().put("assignmentId", ErrorString.INVALID_ID);
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(errors).toString());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(errors).toString());
         }
 
         Assignment assignment = assignmentService.getById(searchAssignmentId);
 
         if (loggedInUser.type == UserType.STUDENT) {
             if (!enrollmentService.isEnrolled(loggedInUser.studentId, assignment.periodId)) {
-                JSONObject errors = new JSONObject().put("studentId", ErrorString.INVALID_ID);
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(errors).toString());
+                JSONObject errors = new JSONObject().put("assignmentId", ErrorString.INVALID_ID);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(errors).toString());
             }
         }
         if (loggedInUser.type == UserType.TEACHER) {
-            if (periodService.isTeacher(loggedInUser.teacherId, assignment.periodId)) {
-                JSONObject errors = new JSONObject().put("teacherId", ErrorString.INVALID_ID);
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(errors).toString());
+            if (!periodService.isTeacher(loggedInUser.teacherId, assignment.periodId)) {
+                JSONObject errors = new JSONObject().put("assignmentId", ErrorString.INVALID_ID);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(errors).toString());
             }
         }
 
@@ -92,8 +92,7 @@ public class AssignmentController {
     @PostMapping(path = "", consumes = { MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<String> createAssignment(
         @RequestHeader("Authorization") String authApiKey,
-        @RequestBody Assignment createAssignment
-    ) {
+        @RequestBody Assignment createAssignment) {
         AuthToken authToken = authTokenService.verifyBearerKey(authApiKey);
         if (!authToken.valid) {
             JSONObject errors = new JSONObject().put("accessToken", ErrorString.INVALID_ACCESS_TOKEN);
@@ -170,7 +169,7 @@ public class AssignmentController {
         Assignment assignment = assignmentService.getById(patchDetails.assignmentId);
 
         if (loggedInUser.type == UserType.TEACHER) {
-            if (periodService.isTeacher(loggedInUser.teacherId, assignment.periodId)) {
+            if (!periodService.isTeacher(loggedInUser.teacherId, assignment.periodId)) {
                 JSONObject errors = new JSONObject().put("teacherId", ErrorString.OWNERSHIP);
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(errors).toString());
             }
@@ -179,13 +178,13 @@ public class AssignmentController {
         assignment.updateDetails(patchDetails);
         assignmentService.updateAssignment(assignment);
 
-        return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body("Not yet implemented.");
+        return ResponseEntity.status(HttpStatus.OK).body(new Response("success").toString());
     }
 
     @DeleteMapping(path = "")
     public ResponseEntity<String> deleteAssignment(
         @RequestHeader("Authorization") String authApiKey,
-        @RequestBody Assignment deleteAssignment) {
+        @RequestParam(value = "assignmentId", defaultValue = "-1") Long deleteAssignmentId) {
         AuthToken authToken = authTokenService.verifyBearerKey(authApiKey);
         if (!authToken.valid) {
             JSONObject errors = new JSONObject().put("accessToken", ErrorString.INVALID_ACCESS_TOKEN);
@@ -197,6 +196,14 @@ public class AssignmentController {
             JSONObject errors = new JSONObject().put("user", ErrorString.USER_TYPE);
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse(errors).toString());
         }
+
+        if (!assignmentService.existsById(deleteAssignmentId)) {
+            JSONObject errors = new JSONObject().put("assignmentId", ErrorString.INVALID_ID);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(errors).toString());
+        }
+
+        Assignment deleteAssignment = assignmentService.getById(deleteAssignmentId);
+        
         if (periodService.getById(deleteAssignment.periodId).teacherId != loggedInUser.teacherId) {
             JSONObject errors = new JSONObject().put("user", ErrorString.OWNERSHIP);
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse(errors).toString());
