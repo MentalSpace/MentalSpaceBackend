@@ -42,7 +42,7 @@ public class TodoController {
     @Autowired
     WorkService workService;
     
-    @GetMapping(path = "", consumes = { MediaType.APPLICATION_JSON_VALUE })
+    @GetMapping(path = "")
 	public ResponseEntity<String> getTodo(
 		@RequestHeader("Authorization") String authApiKey, 
             @RequestParam(value = "todoId", defaultValue = "-1") Long searchTodoId) {
@@ -152,7 +152,7 @@ public class TodoController {
         return ResponseEntity.status(HttpStatus.OK).body(new Response("success").toString());
     }
 
-    @DeleteMapping(path = "", consumes = { MediaType.APPLICATION_JSON_VALUE })
+    @DeleteMapping(path = "")
     public ResponseEntity<String> deleteTodo(
     	@RequestHeader("Authorization") String authApiKey, 
         @RequestParam(value = "todoId", defaultValue = "-1") Long deleteTodoId) {
