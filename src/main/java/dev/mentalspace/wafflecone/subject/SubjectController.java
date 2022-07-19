@@ -156,4 +156,11 @@ public class SubjectController {
 
 		return ResponseEntity.status(HttpStatus.OK).body(new Response("success").toString());
 	}
+
+	@GetMapping("/all")
+	public ResponseEntity<String> getAllSubjects() {
+		List<Subject> subjects = subjectService.getAll();
+		return ResponseEntity.status(HttpStatus.OK)
+				.body(new Response("success").put("subject", subjects).toString());
+	}
 }

@@ -309,11 +309,12 @@ public class PeriodController {
         return ResponseEntity.status(HttpStatus.OK).body(new Response("success").toString());
         // TODO: Debate on implementing allowing admin/teachers to add students
     }
-
-    @PostMapping(path = "/kick", consumes = { MediaType.APPLICATION_JSON_VALUE })
+    // TODO: fix this
+    @DeleteMapping(path = "/kick")
     public ResponseEntity<String> kickStudent(
         @RequestHeader("Authorization") String authApiKey,
-        @RequestBody Enrollment kickStudent) {
+        @RequestParam(value = "studentId") List<Long> kickStudent,
+        @RequestParam(value = "periodId" ) List<Long> kickPeriod) {
         AuthToken authToken = authTokenService.verifyBearerKey(authApiKey);
         if (!authToken.valid) {
             JSONObject errors = new JSONObject().put("accessToken", ErrorString.INVALID_ACCESS_TOKEN);
@@ -325,12 +326,13 @@ public class PeriodController {
             JSONObject errors = new JSONObject().put("user", ErrorString.USER_TYPE);
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse(errors).toString());
         }
-        if (periodService.getById(kickStudent.periodId).teacherId != loggedInUser.teacherId) {
+
+        if (periodService.getById(kickPeriod).teacherId != loggedInUser.teacherId) {
             JSONObject errors = new JSONObject().put("user", ErrorString.OWNERSHIP);
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse(errors).toString());
         }
 
-        enrollmentService.kickStudents(kickStudent);
+        
         
         return ResponseEntity.status(HttpStatus.OK).body(new Response("success").toString());
     }

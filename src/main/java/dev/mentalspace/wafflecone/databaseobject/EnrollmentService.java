@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
-//import java.util.List;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +22,23 @@ public class EnrollmentService {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    // public List<Todo> getById(List<Long> id) {
+    //     String sql = "SELECT todo_id, work_id, date, planned_time, projected_start_time, priority FROM todo "
+    //             + "WHERE todo_id IN (:ids);";
+    //     RowMapper<Todo> rowMapper = new TodoRowMapper();
+    //     Map idsMap = Collections.singletonMap("ids", id);
+    //     List<Todo> todos = jdbcTemplate.queryForObject(sql, idsMap, rowMapper);
+    //     return todos;
+    // }
+
+    public Enrollment getByStudentAndPeriodId(long student, long period) {
+        String sql = "SELECT enrollment_id, student_id, period_id, student_preference FROM enrollment "
+            + "WHERE student_id = ? AND period_id = ?;";
+        RowMapper<Enrollment> rowMapper = new EnrollmentRowMapper();
+        Enrollment enrollment = jdbcTemplate.queryForObject(sql, rowMapper, student, period);
+        return enrollment;
+    }
+
     public Enrollment getById(long id) {
         String sql = "SELECT enrollment_id, student_id, period_id, student_preference FROM enrollment "
                 + "WHERE enrollment_id = ?;";
@@ -32,10 +48,18 @@ public class EnrollmentService {
     }
 
     public List<Enrollment> getEnrollmentsByPeriodId(long periodId) {
-        String sql = "SELECT work_id, student_id, assignment_id, remaining_time, priority FROM work "
-                + "WHERE assignment_id = ? ORDER BY priority;";
+        String sql = "SELECT enrollment_id, student_id, period_id, student_preference FROM enrollment "
+                + "WHERE period_id = ?;";
         RowMapper<Enrollment> rowMapper = new EnrollmentRowMapper();
         List<Enrollment> enrollments = jdbcTemplate.query(sql, rowMapper, periodId);
+        return enrollments;
+    }
+
+    public List<Enrollment> getEnrollmentsByStudentId(long studentId) {
+        String sql = "SELECT enrollment_id, student_id, period_id, student_preference FROM enrollment "
+                + "WHERE student_id = ?;";
+        RowMapper<Enrollment> rowMapper = new EnrollmentRowMapper();
+        List<Enrollment> enrollments = jdbcTemplate.query(sql, rowMapper, studentId);
         return enrollments;
     }
 
