@@ -7,6 +7,7 @@ import org.json.JSONObject;
 public class Enrollment {
     public Long enrollmentId;
     public Long studentId;
+    @JsonProperty("classId")
     public Long periodId;
     public Integer studentPreference;
 

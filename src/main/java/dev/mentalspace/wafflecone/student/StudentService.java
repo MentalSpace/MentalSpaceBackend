@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -21,6 +22,13 @@ import dev.mentalspace.wafflecone.Utils;
 public class StudentService {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
+
+	public List<Student> getByPeriodId(long id) {
+		String sql = "SELECT student_id, canonical_id, first_name, last_name, phone, grade FROM student JOIN enrollment ON student.student_id = enrollment.student_id WHERE enrollment.periodId = ?;";
+		RowMapper<Student> rowMapper = new StudentRowMapper();
+		List<Student> students = jdbcTemplate.queryForObject(sql, rowMapper, id);
+		return students;
+	}
 
 	public Student getById(long id) {
 		String sql = "SELECT student_id, canonical_id, first_name, last_name, phone, grade FROM student WHERE student_id = ?;";

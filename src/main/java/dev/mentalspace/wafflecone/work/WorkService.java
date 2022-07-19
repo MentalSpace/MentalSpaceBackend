@@ -40,6 +40,15 @@ public class WorkService {
         return work;
     }
 
+    public List<Work> getById(List<Long> id) {
+        String sql = "SELECT work_id, student_id, assignment_id, remaining_time, priority FROM work "
+                + "WHERE work_id IN (:ids);";
+        RowMapper<Work> rowMapper = new WorkRowMapper();
+        Map idsMap = Collections.singletonMap("ids", id);
+        List<Work> works = jdbcTemplate.queryForObject(sql, idsMap, rowMapper);
+        return works;
+    }
+
     public List<Work> getByStudentId(long id) {
         String sql = "SELECT work_id, student_id, assignment_id, remaining_time, priority FROM work "
                 + "WHERE student_id = ? ORDER BY 1;";

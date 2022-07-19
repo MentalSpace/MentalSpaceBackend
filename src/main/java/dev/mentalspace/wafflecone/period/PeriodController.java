@@ -40,6 +40,7 @@ import dev.mentalspace.wafflecone.teacher.Teacher;
 import dev.mentalspace.wafflecone.user.User;
 import dev.mentalspace.wafflecone.user.UserService;
 import dev.mentalspace.wafflecone.user.UserType;
+import dev.mentalspace.wafflecone.student.*;
 
 @RestController
 @RequestMapping(path = { "/api/v0/class" })
@@ -58,6 +59,8 @@ public class PeriodController {
     SubjectService subjectService;
     @Autowired
     AssignmentService assignmentService;
+    @Autowired
+    StudentService studentService;
 
     @PostMapping(path = { "" }, consumes = { MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<String> createPeriod(@RequestHeader("Authorization") String authApiKey,
@@ -105,6 +108,7 @@ public class PeriodController {
         }
         User loggedInUser = userService.getById(authToken.userId);
 
+        // interesting, if (!periodService.existsById(searchPeriodId)) {...} will do the same check, bc if searchid <= 0, then existsbyid = false
         if (searchPeriodId <= 0) {
             JSONObject errors = new JSONObject().put("classId", ErrorString.INVALID_ID);
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse(errors).toString());
@@ -113,8 +117,8 @@ public class PeriodController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(errors).toString());
         }
 
+        Period period = periodService.getById(searchPeriodId);
         if (loggedInUser.type == UserType.TEACHER) {
-            Period period = periodService.getById(searchPeriodId);
             if (loggedInUser.teacherId == period.teacherId) {
                 return ResponseEntity.status(HttpStatus.OK)
                         .body(new Response("success").put("class", period.toJsonObject()).toString());
@@ -127,7 +131,6 @@ public class PeriodController {
         } else if (loggedInUser.type == UserType.STUDENT) {
             // check enrolled
             if (enrollmentService.isEnrolled(loggedInUser.studentId, searchPeriodId)) {
-                Period period = periodService.getById(searchPeriodId);
                 return ResponseEntity.status(HttpStatus.OK)
                         // Scrub the class code if student is fetching
                         .body(new Response("success").put("class", period.toJsonObject().put("classCode", ""))
@@ -160,6 +163,15 @@ public class PeriodController {
         }
         
         Period period = periodService.getById(patchDetails.periodId);
+
+        if (loggedInUser.type != UserType.TEACHER) {
+            JSONObject errors = new JSONObject().put("accessToken", ErrorString.USER_TYPE);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(errors).toString());
+        }
+        if (period.teacherId != loggedInUser.teacherId) {
+            JSONObject errors = new JSONObject().put("teacherId", ErrorString.OWNERSHIP);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(errors).toString());
+        }
 
         period.updateDetails(patchDetails);
         if (patchDetails.regenerateClassCode) {
@@ -266,19 +278,34 @@ public class PeriodController {
         User loggedInUser = userService.getById(authToken.userId);
 
         // Debate on letting students see this resource
-        if(loggedInUser.type == UserType.STUDENT){
-            JSONObject errors = new JSONObject().put("user", ErrorString.USER_TYPE);
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse(errors).toString());
-        }
+        //  ^ They literally see all of these in person during class
+        // if(loggedInUser.type == UserType.STUDENT){
+        //     JSONObject errors = new JSONObject().put("user", ErrorString.USER_TYPE);
+        //     return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse(errors).toString());
+        // }
 
         if (!periodService.existsById(searchPeriodId)) {
             JSONObject errors = new JSONObject().put("classId", ErrorString.INVALID_ID);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(errors).toString());
         }
-        
-        Period periods = periodService.getBySubjectId(searchPeriodId);
 
-        Response response = new Response("success").put("students", periods.toJsonObject());
+        Period period = periodService.getById(searchPeriodId);
+
+        if (loggedInUser.type == UserType.STUDENT) {
+            if (!enrollmentService.enrolled(loggedInUser.studentId, searchPeriodId)) {
+                JSONObject errors = new JSONObject().put("studentId", ErrorString.INVALID_ID);
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(errors).toString());
+            }
+        } else if (loggedInUser.type == UserType.TEACHER) {
+            if (loggedInUser.teacherId != period.teacherId) {
+                JSONObject errors = new JSONObject().put("teacherId", ErrorString.OWNERSHIP);
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(errors).toString());
+            }
+        }
+        
+        List<Student> students = studentService.getByPeriodId(searchPeriodId);
+
+        Response response = new Response("success").put("students", students);
         return ResponseEntity.status(HttpStatus.OK).body(response.toString());
     }
 
