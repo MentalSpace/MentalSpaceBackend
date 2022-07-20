@@ -178,7 +178,7 @@ public class TeacherController {
 		return ResponseEntity.status(HttpStatus.OK).body(response.toString());
 	}
 
-	@GetMapping("/assignmentEntryShortcut")
+	@GetMapping("/assignmentType")
 	public ResponseEntity<String> teacherShortcuts(@RequestHeader("Authorization") String authApiKey,
 			@RequestParam(value = "teacherId", defaultValue = "-1") long teacherId) {
 		AuthToken authToken = authTokenService.verifyBearerKey(authApiKey);
