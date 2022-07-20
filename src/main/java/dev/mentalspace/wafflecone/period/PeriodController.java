@@ -309,11 +309,11 @@ public class PeriodController {
         return ResponseEntity.status(HttpStatus.OK).body(new Response("success").toString());
         // TODO: Debate on implementing allowing admin/teachers to add students
     }
-    // TODO: fix this
+    
     @DeleteMapping(path = "/kick")
     public ResponseEntity<String> kickStudent(
         @RequestHeader("Authorization") String authApiKey,
-        @RequestParam(value = "studentId") List<Long> kickStudent,
+        @RequestParam(value = "studentIds") List<Long> kickStudent,
         @RequestParam(value = "periodId" ) Long kickPeriod) {
         AuthToken authToken = authTokenService.verifyBearerKey(authApiKey);
         if (!authToken.valid) {
@@ -330,6 +330,15 @@ public class PeriodController {
         if (periodService.getById(kickPeriod).teacherId != loggedInUser.teacherId) {
             JSONObject errors = new JSONObject().put("teacherId", ErrorString.OWNERSHIP);
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse(errors).toString());
+        }
+
+        if (kickStudent.size() != enrollmentService.studentByIdListInClass(kickStudent, kickPeriod)) {
+            JSONObject errors = new JSONObject().put("studentIds", ErrorString.INVALID_ID);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(errors).toString());
+        }
+
+        for (int i = 0; i < kickStudent.size(); i++) {
+            
         }
         
         return ResponseEntity.status(HttpStatus.OK).body(new Response("success").toString());
