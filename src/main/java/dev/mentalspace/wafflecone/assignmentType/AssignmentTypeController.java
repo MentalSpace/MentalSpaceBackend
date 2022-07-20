@@ -33,7 +33,7 @@ import org.springframework.web.client.HttpClientErrorException.NotFound;
 import dev.mentalspace.wafflecone.user.*;
 
 @RestController
-@RequestMapping(path = { "/api/v0/assignmentEntryShortcut" })
+@RequestMapping(path = { "/api/v0/assignmentType" })
 public class AssignmentTypeController {
     @Autowired
     UserService userService;
