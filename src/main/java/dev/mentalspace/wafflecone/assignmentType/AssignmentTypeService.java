@@ -22,29 +22,29 @@ public class AssignmentTypeService {
     private JdbcTemplate jdbcTemplate;
 
     public boolean existsById(Long id) {
-        String sql = "SELECT COUNT(*) FROM assignment_entry_shortcut WHERE assignment_entry_shortcut_id = ?;";
+        String sql = "SELECT COUNT(*) FROM assignment_type WHERE assignment_type_id = ?;";
 		int count = jdbcTemplate.queryForObject(sql, Integer.class, id);
 		return count != 0;
     }
 
     public AssignmentType getById(long id) {
-        String sql = "SELECT assignment_entry_shortcut_id, teacher_id, value "
-                + "FROM assignment_entry_shortcut WHERE assignment_entry_shortcut_id = ?;";
+        String sql = "SELECT assignment_type_id, teacher_id, value "
+                + "FROM assignment_type WHERE assignment_type_id = ?;";
         RowMapper<AssignmentType> rowMapper = new AssignmentTypeRowMapper();
         AssignmentType assignmentEntryShortcut = jdbcTemplate.queryForObject(sql, rowMapper, id);
         return assignmentEntryShortcut;
     }
 
     public List<AssignmentType> getByTeacherId(long id) {
-        String sql = "SELECT assignment_entry_shortcut_id, teacher_id, value "
-                + "FROM assignment_entry_shortcut WHERE teacher_id = ?;";
+        String sql = "SELECT assignment_type_id, teacher_id, value "
+                + "FROM assignment_type WHERE teacher_id = ?;";
         RowMapper<AssignmentType> rowMapper = new AssignmentTypeRowMapper();
         List<AssignmentType> assignmentEntryShortcuts = jdbcTemplate.query(sql, rowMapper, id);
         return assignmentEntryShortcuts;
     }
 
     public void addAssignmentEntryShortcut(AssignmentType assignmentEntryShortcut) {
-        String sql = "INSERT INTO assignment_entry_shortcut (teacher_id, value) VALUES " + 
+        String sql = "INSERT INTO assignment_type (teacher_id, value) VALUES " + 
                 "(?,?);";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(new PreparedStatementCreator() {
@@ -60,9 +60,9 @@ public class AssignmentTypeService {
     }
 
     public void updateAssignmentEntryShortcut(AssignmentType assignmentEntryShortcut) {
-        String sql = "UPDATE assignment_entry_shortcut SET "
+        String sql = "UPDATE assignment_type SET "
                 + "teacher_id = ?, value = ? "
-                + "WHERE assignment_entry_shortcut_id = ?;";
+                + "WHERE assignment_type_id = ?;";
         jdbcTemplate.update(new PreparedStatementCreator() {
             public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
                 PreparedStatement ps = connection.prepareStatement(sql);
@@ -75,7 +75,7 @@ public class AssignmentTypeService {
     }
 
     public void deleteAssignmentEntryShortcut(AssignmentType assignmentEntryShortcut) {
-        String sql = "DELETE FROM assignment_entry_shortcut WHERE assignment_entry_shortcut_id = ?;";
+        String sql = "DELETE FROM assignment_type WHERE assignment_type_id = ?;";
         jdbcTemplate.update(new PreparedStatementCreator() {
             public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
                 PreparedStatement ps = connection.prepareStatement(sql);
