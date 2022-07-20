@@ -337,9 +337,7 @@ public class PeriodController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(errors).toString());
         }
 
-        for (int i = 0; i < kickStudent.size(); i++) {
-            
-        }
+        enrollmentService.kickByStudentIdListAndPeriodId(kickStudent, kickPeriod);
         
         return ResponseEntity.status(HttpStatus.OK).body(new Response("success").toString());
     }

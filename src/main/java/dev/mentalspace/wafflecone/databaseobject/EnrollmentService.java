@@ -134,10 +134,25 @@ public class EnrollmentService {
         );
         return addCounts;
     }
-/* 
-    public void kickByStudentIdListAndPeriodId(List<Long> students, long period) {
 
-    }*/
+    public void kickByStudentIdListAndPeriodId(List<Long> students, long period) {
+        String sql = "DELETE FROM enrollment WHERE period_id = ? AND student_id IN (";
+
+        for (int i = 0; i < students.size() - 1; i++) {
+            sql = sql + Long.toString(students.get(i)) + ", ";
+        }
+        sql = sql + Long.toString(students.get(students.size() - 1)) + ");";
+
+        String newsql = sql;
+
+        jdbcTemplate.update(new PreparedStatementCreator() {
+            public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
+                PreparedStatement ps = connection.prepareStatement(newsql);
+                ps.setLong(1, period);
+                return ps;
+            }
+        });
+    }
 
     public void deleteEnrollment(Enrollment enrollment) {
         String sql = "DELETE FROM enrollment WHERE enrollment_id = ?;";
