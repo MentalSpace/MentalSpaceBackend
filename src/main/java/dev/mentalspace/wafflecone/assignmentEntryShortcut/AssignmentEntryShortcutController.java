@@ -6,6 +6,9 @@ import dev.mentalspace.wafflecone.auth.AuthToken;
 import dev.mentalspace.wafflecone.auth.AuthScope;
 import dev.mentalspace.wafflecone.auth.AuthTokenService;
 import dev.mentalspace.wafflecone.databaseobject.EnrollmentService;
+import dev.mentalspace.wafflecone.response.ErrorResponse;
+import dev.mentalspace.wafflecone.response.ErrorString;
+import dev.mentalspace.wafflecone.response.Response;
 
 import java.util.List;
 
@@ -43,6 +46,7 @@ public class AssignmentEntryShortcutController {
     public ResponseEntity<String> getAssignmentEntryShortcut(
         @RequestHeader("Authorization") String authApiKey, 
         @RequestParam(value = "assignmentEntryShortcutId", defaultValue = "-1") Long assignmentEntryShortcutId) {
+        AuthToken authToken = authTokenService.verifyBearerKey(authApiKey);
         if (!authToken.valid) {
             JSONObject errors = new JSONObject().put("accessToken", ErrorString.INVALID_ACCESS_TOKEN);
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse(errors).toString());
@@ -119,7 +123,7 @@ public class AssignmentEntryShortcutController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse(errors).toString());
         }
         
-        if (!assignmentEntryShortcutService.existsById(assignmentEntryShortcutId)) {
+        if (!assignmentEntryShortcutService.existsById(patchDetails.assignmentEntryShortcutId)) {
             JSONObject errors = new JSONObject().put("assignmentEntryShortcutId", ErrorString.INVALID_ID);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(errors).toString());
         }

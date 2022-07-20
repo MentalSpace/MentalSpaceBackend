@@ -9,6 +9,8 @@ import dev.mentalspace.wafflecone.auth.RefreshToken;
 import dev.mentalspace.wafflecone.auth.RefreshTokenService;
 import dev.mentalspace.wafflecone.databaseobject.EnrollmentService;
 
+import java.util.List;
+
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;

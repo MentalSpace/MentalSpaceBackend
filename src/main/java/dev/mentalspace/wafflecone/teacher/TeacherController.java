@@ -193,7 +193,7 @@ public class TeacherController {
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse(errors).toString());
 		}
 
-		if (!TeacherService.existsById(teacherId)) {
+		if (!teacherService.existsById(teacherId)) {
 			if (loggedInUser.type == UserType.TEACHER) {
 				teacherId = loggedInUser.teacherId;
 			}

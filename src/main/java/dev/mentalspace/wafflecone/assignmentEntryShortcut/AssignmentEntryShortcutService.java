@@ -39,8 +39,8 @@ public class AssignmentEntryShortcutService {
         String sql = "SELECT assignment_entry_shortcut_id, teacher_id, value "
                 + "FROM assignment_entry_shortcut WHERE teacher_id = ?;";
         RowMapper<AssignmentEntryShortcut> rowMapper = new AssignmentEntryShortcutRowMapper();
-        List<AssignmentEntryShortcut> assignmentEntryShortcuts = jdbcTemplate.queryForObject(sql, rowMapper, id);
-        return assignmentEntryShortcut;
+        List<AssignmentEntryShortcut> assignmentEntryShortcuts = jdbcTemplate.query(sql, rowMapper, id);
+        return assignmentEntryShortcuts;
     }
 
     public void addAssignmentEntryShortcut(AssignmentEntryShortcut assignmentEntryShortcut) {

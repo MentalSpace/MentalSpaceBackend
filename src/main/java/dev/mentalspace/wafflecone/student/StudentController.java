@@ -320,7 +320,7 @@ public class StudentController {
 		}
 		User loggedInUser = userService.getById(authToken.userId);
 
-		if (loggedInStudent.UserType != UserType.Student) {
+		if (loggedInUser.type != UserType.STUDENT) {
 			JSONObject errors = new JSONObject().put("type", ErrorString.USER_TYPE);
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(errors).toString());
 		}
@@ -336,11 +336,11 @@ public class StudentController {
 		}
 
 		Enrollment dbEnrollment = enrollmentService.getByStudentAndPeriodId(patchDetails.studentId, patchDetails.periodId);
-		dbEnrollment.studentPreference = patchDetails.student_preference;
+		dbEnrollment.studentPreference = patchDetails.studentPreference;
 
 		enrollmentService.updateEnrollment(dbEnrollment);
 
-		return ResponseEntity.status(HttpStatus.OK).body(new Response("success").toString);
+		return ResponseEntity.status(HttpStatus.OK).body(new Response("success").toString());
 	}
 	
 	@GetMapping(path = "/enrollment")
@@ -353,13 +353,13 @@ public class StudentController {
 		}
 		User loggedInUser = userService.getById(authToken.userId);
 
-		if (loggedInStudent.UserType != UserType.Student) {
+		if (loggedInUser.type != UserType.STUDENT) {
 			JSONObject errors = new JSONObject().put("type", ErrorString.USER_TYPE);
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(errors).toString());
 		}
 
-		List<Enrollment> enrollments = enrollmentService.getByStudentId(studentId);
+		List<Enrollment> enrollments = enrollmentService.getEnrollmentsByStudentId(studentId);
 
-		return ResponseEntity.status(HttpStatus.OK).body(new Response("success").put("enrollments", enrollments).toString);
+		return ResponseEntity.status(HttpStatus.OK).body(new Response("success").put("enrollments", enrollments).toString());
 	}
 }

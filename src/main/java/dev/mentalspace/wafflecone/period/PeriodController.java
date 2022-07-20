@@ -314,7 +314,7 @@ public class PeriodController {
     public ResponseEntity<String> kickStudent(
         @RequestHeader("Authorization") String authApiKey,
         @RequestParam(value = "studentId") List<Long> kickStudent,
-        @RequestParam(value = "periodId" ) List<Long> kickPeriod) {
+        @RequestParam(value = "periodId" ) Long kickPeriod) {
         AuthToken authToken = authTokenService.verifyBearerKey(authApiKey);
         if (!authToken.valid) {
             JSONObject errors = new JSONObject().put("accessToken", ErrorString.INVALID_ACCESS_TOKEN);
@@ -328,11 +328,9 @@ public class PeriodController {
         }
 
         if (periodService.getById(kickPeriod).teacherId != loggedInUser.teacherId) {
-            JSONObject errors = new JSONObject().put("user", ErrorString.OWNERSHIP);
+            JSONObject errors = new JSONObject().put("teacherId", ErrorString.OWNERSHIP);
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse(errors).toString());
         }
-
-        
         
         return ResponseEntity.status(HttpStatus.OK).body(new Response("success").toString());
     }
