@@ -2,6 +2,7 @@ package dev.mentalspace.wafflecone.teacher;
 
 import dev.mentalspace.wafflecone.Utils;
 import dev.mentalspace.wafflecone.WaffleConeController;
+import dev.mentalspace.wafflecone.assignmentType.*;
 import dev.mentalspace.wafflecone.auth.AuthToken;
 import dev.mentalspace.wafflecone.auth.AuthScope;
 import dev.mentalspace.wafflecone.auth.AuthTokenService;
@@ -45,6 +46,8 @@ public class TeacherController {
 	TeacherService teacherService;
 	@Autowired
 	PeriodService periodService;
+	@Autowired
+	AssignmentTypeService assignmentEntryShortcutService;
 
 	@PostMapping(path = "", consumes = { MediaType.APPLICATION_JSON_VALUE })
 	public ResponseEntity<String> registerTeacher(@RequestHeader("Authorization") String authApiKey,
@@ -181,6 +184,34 @@ public class TeacherController {
 		List<Period> teacherPeriods = periodService.getByTeacherId(searchTeacherId, searchArchived);
 		
 		Response response = new Response("success").put("classIds", teacherPeriods);
+		return ResponseEntity.status(HttpStatus.OK).body(response.toString());
+	}
+
+	@GetMapping("/assignmentType")
+	public ResponseEntity<String> teacherShortcuts(@RequestHeader("Authorization") String authApiKey,
+			@RequestParam(value = "teacherId", defaultValue = "-1") long teacherId) {
+		AuthToken authToken = authTokenService.verifyBearerKey(authApiKey);
+		if (!authToken.valid) {
+			JSONObject errors = new JSONObject().put("accessToken", ErrorString.INVALID_ACCESS_TOKEN);
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse(errors).toString());
+		}
+		User loggedInUser = userService.getById(authToken.userId);
+
+		if (loggedInUser.type != UserType.TEACHER) {
+			JSONObject errors = new JSONObject().put("user", ErrorString.USER_TYPE);
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse(errors).toString());
+		}
+
+		if (!teacherService.existsById(teacherId)) {
+			if (loggedInUser.type == UserType.TEACHER) {
+				teacherId = loggedInUser.teacherId;
+			}
+			JSONObject errors = new JSONObject().put("teacherId", ErrorString.INVALID_ID);
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(errors).toString());
+		}
+
+		List<AssignmentType> assignmentEntryShortcuts = assignmentEntryShortcutService.getByTeacherId(teacherId);
+		Response response = new Response("success").put("assignmentEntryShortcuts", assignmentEntryShortcuts);
 		return ResponseEntity.status(HttpStatus.OK).body(response.toString());
 	}
 }

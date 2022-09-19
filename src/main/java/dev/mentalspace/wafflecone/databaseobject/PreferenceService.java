@@ -29,6 +29,13 @@ public class PreferenceService {
         return preference;
     }
 
+    public boolean existsByStudentId(long id) {
+        String sql = "SELECT count(*) "
+                + "FROM preference WHERE student_id = ?;";
+        Integer i = jdbcTemplate.queryForObject(sql, Integer.class, id);
+        return (i > 0);
+    }
+
     public Preference getByStudentId(long id) {
         String sql = "SELECT preference_id, student_id, assignment_order, start_type, break_length, break_frequency "
                 + "FROM preference WHERE student_id = ?;";
@@ -45,8 +52,8 @@ public class PreferenceService {
             public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
                 PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
                 ps.setLong(1, preference.studentId);
-                ps.setInt(2, preference.assignmentOrder);
-                ps.setInt(3, preference.startType);
+                ps.setInt(2, preference.assignmentOrder.ordinal());
+                ps.setInt(3, preference.startType.ordinal());
                 ps.setLong(4, preference.breakLength);
                 ps.setLong(5, preference.breakFrequency);
                 return ps;
@@ -64,8 +71,8 @@ public class PreferenceService {
             public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
                 PreparedStatement ps = connection.prepareStatement(sql);
                 ps.setLong(1, preference.studentId);
-                ps.setInt(2, preference.assignmentOrder);
-                ps.setInt(3, preference.startType);
+                ps.setInt(2, preference.assignmentOrder.ordinal());
+                ps.setInt(3, preference.startType.ordinal());
                 ps.setLong(4, preference.breakLength);
                 ps.setLong(5, preference.breakFrequency);
                 ps.setLong(6, preference.preferenceId);

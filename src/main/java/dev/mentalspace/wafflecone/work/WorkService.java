@@ -4,7 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
@@ -26,6 +28,24 @@ public class WorkService {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    public List<Work> getByIdList(List<Long> id) {
+        String sql = "SELECT work_id, student_id, assignment_id, remaining_time, priority FROM work "
+                + "WHERE work_id IN (:ids);";
+        RowMapper<Work> rowMapper = new WorkRowMapper();
+        Map idsMap = Collections.singletonMap("ids", id);
+        List<Work> works = jdbcTemplate.query(sql, rowMapper, idsMap);
+        return works;
+    }
+
+    public List<Work> getByTodoIdList(List<Long> id) {
+        String sql = "SELECT work_id, student_id, assignment_id, remaining_time, priority FROM work "
+                + "WHERE todo_id IN (:ids);";
+        RowMapper<Work> rowMapper = new WorkRowMapper();
+        Map idsMap = Collections.singletonMap("ids", id);
+        List<Work> todos = jdbcTemplate.query(sql, rowMapper, idsMap);
+        return todos;
+    }
+
     public boolean existsById(Long id) {
 		String sql = "SELECT COUNT(*) FROM work WHERE work_id = ?;";
 		int count = jdbcTemplate.queryForObject(sql, Integer.class, id);
@@ -42,7 +62,7 @@ public class WorkService {
 
     public List<Work> getByStudentId(long id) {
         String sql = "SELECT work_id, student_id, assignment_id, remaining_time, priority FROM work "
-                + "WHERE student_id = ?;";
+                + "WHERE student_id = ? ORDER BY 1;";
         RowMapper<Work> rowMapper = new WorkRowMapper();
         List<Work> works = jdbcTemplate.query(sql, rowMapper, id);
         return works;
@@ -51,7 +71,7 @@ public class WorkService {
     public List<Work> getByStudentId(long id, boolean outstanding) {
         String sql = "SELECT work_id, student_id, assignment_id, remaining_time, priority FROM work "
                 + "WHERE student_id = ?" + 
-                (outstanding ? " AND remaining_time = 0" : "") + ";";
+                (outstanding ? " AND remaining_time = 0" : "") + " ORDER BY 1;";
         RowMapper<Work> rowMapper = new WorkRowMapper();
         List<Work> works = jdbcTemplate.query(sql, rowMapper, id);
         return works;
@@ -59,7 +79,7 @@ public class WorkService {
 
     public List<Work> getByAssignmentId(long id) {
         String sql = "SELECT work_id, student_id, assignment_id, remaining_time, priority FROM work "
-                + "WHERE assignment_id = ?;";
+                + "WHERE assignment_id = ? ORDER BY 1;";
         RowMapper<Work> rowMapper = new WorkRowMapper();
         List<Work> works = jdbcTemplate.query(sql, rowMapper, id);
         return works;
