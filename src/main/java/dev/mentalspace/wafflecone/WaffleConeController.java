@@ -22,20 +22,17 @@ import dev.mentalspace.wafflecone.user.UserController;
 public class WaffleConeController {
 	public static Logger logger = LoggerFactory.getLogger(WaffleConeController.class);
 
-	@GetMapping("/test")
-	public ResponseEntity<String> test() {
-		SimpleDateFormat sdf = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss");
-		sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
-		WaffleConeController.logger.error(sdf.format(new Date(System.currentTimeMillis())));
-		return ResponseEntity.status(HttpStatus.OK).body(new Response("success")
-				.put("time", sdf.format(new Date(System.currentTimeMillis())) + " GMT").toString());
-	}
+	// @GetMapping("/test")
+	// public ResponseEntity<String> test() {
+	// 	SimpleDateFormat sdf = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss");
+	// 	sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+	// 	WaffleConeController.logger.error(sdf.format(new Date(System.currentTimeMillis())));
+	// 	return ResponseEntity.status(HttpStatus.OK).body(new Response("success")
+	// 			.put("time", sdf.format(new Date(System.currentTimeMillis())) + " GMT").toString());
+	// }
 
 	@GetMapping("/api/v0/test/hello")
 	public ResponseEntity<String> hello() {
-		SimpleDateFormat sdf = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss");
-		sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
-		WaffleConeController.logger.error(sdf.format(new Date(System.currentTimeMillis())));
 		return ResponseEntity.status(HttpStatus.OK).body(new Response("success")
 				.put("message", "Hello World").toString());
 	}
