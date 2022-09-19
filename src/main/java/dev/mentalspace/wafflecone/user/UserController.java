@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
+import ch.qos.logback.classic.pattern.Util;
 import dev.mentalspace.wafflecone.response.ErrorResponse;
 import dev.mentalspace.wafflecone.response.ErrorString;
 import dev.mentalspace.wafflecone.response.Response;
@@ -102,6 +102,11 @@ public class UserController {
 		User checkUser;
 		boolean userValid = false;
 
+		if ((Utils.isEmpty(loginDetails.username) && Utils.isEmpty(loginDetails.email)) || Utils.isEmpty(loginDetails.password)) {
+			JSONObject errors = new JSONObject().put("request", ErrorString.MISSING_FIELD);
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(errors).toString());
+		}
+
 		if (!Utils.isEmpty(loginDetails.username) && userService.existsByUsername(loginDetails.username)) {
 			checkUser = userService.getByUsername(loginDetails.username);
 			if (Utils.matchesPassword(loginDetails.password, checkUser.password)) {
@@ -165,7 +170,6 @@ public class UserController {
 	public ResponseEntity<String> getUserDetails(@RequestHeader("Authorization") String authApiKey,
 			@RequestParam(value = "userId", defaultValue = "-1") long searchUserId,
 			@RequestParam(value = "canonicalId", defaultValue = "") String searchCanonicalId) {
-
 		AuthToken authToken = authTokenService.verifyBearerKey(authApiKey);
 		if (!authToken.valid) {
 			JSONObject errors = new JSONObject().put("accessToken", ErrorString.INVALID_ACCESS_TOKEN);
@@ -218,6 +222,7 @@ public class UserController {
 		JSONObject errors = new JSONObject();
 		HttpStatus returnStatus = HttpStatus.OK; // used to check if error'd
 
+		// TODO: Debate on allowing this
 		if (userService.existsByEmail(patchDetails.email) && !loggedInUser.email.equals(patchDetails.email)) {
 			errors = errors.put("email", ErrorString.EMAIL_IN_USE);
 			returnStatus = HttpStatus.CONFLICT;

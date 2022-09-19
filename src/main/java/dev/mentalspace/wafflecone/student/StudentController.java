@@ -164,7 +164,7 @@ public class StudentController {
 	@GetMapping(path = "/classes")
 	public ResponseEntity<String> getClasses(@RequestHeader("Authorization") String authApiKey,
 		@RequestParam(value = "archived", defaultValue = "false") Boolean archived,
-		@RequestParam(value = "canonicalId", defaultValue = "")  String canonicalId,
+		@RequestParam(value = "canonicalId", defaultValue = "-1")  String canonicalId,
 		@RequestParam(value = "studentId", defaultValue = "-1")  Long studentId) {
 		AuthToken authToken = authTokenService.verifyBearerKey(authApiKey);
 		if (!authToken.valid) {
@@ -181,8 +181,9 @@ public class StudentController {
 					JSONObject errors = new JSONObject().put("studentId", ErrorString.INVALID_ID);
 					return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(errors).toString());
 				}
+			} else {
+				studentId = studentService.getByCanonicalId(canonicalId).studentId;
 			}
-			studentId = studentService.getByCanonicalId(canonicalId).studentId;
 		}
 
 		if (loggedInUser.type == UserType.TEACHER || loggedInUser.type == UserType.ADMIN) {

@@ -121,6 +121,12 @@ public class AuthTokenService {
         }
 
         String apiKey = bearerApiKey.substring(7);
-        return verifyKey(apiKey);
+        if (apiKey.length() != 44) {
+            AuthToken authToken = new AuthToken();
+            authToken.valid = false;
+            return authToken;
+        } else {
+            return verifyKey(apiKey);
+        }
     }
 }

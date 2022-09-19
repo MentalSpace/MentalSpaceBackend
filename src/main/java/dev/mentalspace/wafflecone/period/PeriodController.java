@@ -75,6 +75,10 @@ public class PeriodController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse(errors).toString());
         }
 
+        if (createDetails.teacherId == null) {
+            createDetails.teacherId = loggedInUser.teacherId;
+        }
+
         if (!subjectService.existsById(createDetails.subjectId)) {
             JSONObject errors = new JSONObject().put("subjectId", ErrorString.INVALID_ID);
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse(errors).toString());

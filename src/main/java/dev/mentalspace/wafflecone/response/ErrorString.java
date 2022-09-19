@@ -27,6 +27,7 @@ public class ErrorString {
 
 	public static final String USER_TYPE = "Your user type is not valid for this request";
 	public static final String ALREADY_INITIALIZED = "This user account is already initialized. Send a PATCH request instead?";
+	public static final String NOT_INITIALIZED = "This object has not been initialized. Send a POST request to intialize.";
 	public static final String INVALID_ID = "The ID you are searching for is invalid";
 
 	public static final String DEPARTMENT_EMPTY = emptyString("department");
@@ -36,6 +37,8 @@ public class ErrorString {
 	public static final String PERIOD_NOT_FOUND = notFound("period");
 	public static final String COULD_NOT_REGENERATE_CLASS_CODE = "The server could not regenerate the class code, please try again";
 	public static final String OWNERSHIP = "You do not own this resource";
+
+	public static final String MISSING_FIELD = "Your request is missing field(s)";
 
 	public static String inUseString(String field) {
 		return field + " is already in use";

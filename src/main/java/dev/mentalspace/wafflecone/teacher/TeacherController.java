@@ -96,6 +96,10 @@ public class TeacherController {
 
 		if ((searchTeacherId == -1) && (searchCanonicalId.equals(""))) {
 			if (loggedInUser.type == UserType.TEACHER) {
+				if (!teacherService.existsById(loggedInUser.teacherId)) {
+					JSONObject errors = new JSONObject().put("teacherId", ErrorString.NOT_INITIALIZED);
+					return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(errors).toString());
+				}
 				Teacher teacher = teacherService.getById(loggedInUser.teacherId);
 				return ResponseEntity.status(HttpStatus.OK)
 						.body(new Response("success").put("teacher", teacher.toJsonObject()).toString());
@@ -104,14 +108,19 @@ public class TeacherController {
 
 		if (loggedInUser.type == UserType.TEACHER) {
 			if (!teacherService.existsById(searchTeacherId)) {
-				JSONObject errors = new JSONObject().put("teacherId", ErrorString.INVALID_ID);
-           		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse(errors).toString());
+				if (!teacherService.existsByCanonicalId(searchCanonicalId)) {
+					JSONObject errors = new JSONObject().put("teacherId", ErrorString.INVALID_ID);
+					return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse(errors).toString());
+				}
+				Teacher teacher = teacherService.getByCanonicalId(searchCanonicalId);
+				return ResponseEntity.status(HttpStatus.OK)
+					.body(new Response("success").put("teacher", teacher.toJsonObject()).toString());
 			}
 			Teacher teacher = teacherService.getById(searchTeacherId);
-				return ResponseEntity.status(HttpStatus.OK)
-						.body(new Response("success").put("teacher", teacher.toJsonObject()).toString());
+			return ResponseEntity.status(HttpStatus.OK)
+				.body(new Response("success").put("teacher", teacher.toJsonObject()).toString());
 		}
-		// TODO: implement teacher details by teacherId and canonicalId
+		// TODO: implement teacher details by teacherId and canonicalId for students
 		return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body("Not yet implemented.");
 	}
 
@@ -130,14 +139,14 @@ public class TeacherController {
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse(errors).toString());
 		}
 
-		if (teacherService.existsById(patchDetails.teacherId)) {
+		if (patchDetails.teacherId == null || !teacherService.existsById(patchDetails.teacherId)) {
 			Teacher loggedInTeacher = teacherService.getById(loggedInUser.teacherId);
 			loggedInTeacher.updateTeacher(patchDetails);
 			teacherService.updateTeacher(loggedInTeacher);
 			return ResponseEntity.status(HttpStatus.OK).body(new Response("success").toString());
 		}
 
-		// TODO: Debate on if admins can modify teacher accs 
+		// TODO: Debate on if other teachers/admins can modify teacher accs 
 		return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body("Not Implemented Yet.");
 	}
 

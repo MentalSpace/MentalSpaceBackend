@@ -40,6 +40,7 @@ public class User {
         if (!Utils.isEmpty(updUser.username)) {
             this.username = updUser.username;
         }
+        // TODO: Debate on allowing this, email changes
         if (!Utils.isEmpty(updUser.email)) {
             this.email = updUser.email;
         }

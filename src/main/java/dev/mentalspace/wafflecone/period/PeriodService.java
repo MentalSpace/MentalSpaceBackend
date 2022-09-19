@@ -101,7 +101,7 @@ public class PeriodService {
     }
 
     public List<Period> getByStudentId(long id, boolean archived) {
-        String sql = "SELECT period_id, teacher_id, subject_id, period, class_code, archived "
+        String sql = "SELECT period.period_id, teacher_id, subject_id, period, class_code, archived "
                 + "FROM period JOIN enrollment ON period.period_id = enrollment.period_id " + "WHERE student_id = ?"
                 + (archived ? "" : " AND archived = false") + ";";
         RowMapper<Period> rowMapper = new PeriodRowMapper();
@@ -126,7 +126,7 @@ public class PeriodService {
     }
 
     public void addPeriod(Period period) {
-        String sql = "INSERT INTO period (teacher_id, subject_id, class_code, archived) VALUES (?, ?, ?, ?, ?);";
+        String sql = "INSERT INTO period (teacher_id, subject_id, period, class_code, archived) VALUES (?, ?, ?, ?, ?);";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(new PreparedStatementCreator() {
             public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
